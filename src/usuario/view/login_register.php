@@ -1,3 +1,5 @@
+<?php require_once __DIR__ . '/../../../config/autoload.php'; ?>
+<?php require_once PATH_CONFIG . 'config.php';?>
 
 <?php
 session_start();
@@ -12,9 +14,6 @@ if (isset($_SESSION['success'])) {
     unset($_SESSION['success']);
 }
 ?>
-
-<?php require_once __DIR__ . '/../../../config/autoload.php'; ?>
-<?php require_once PATH_CONFIG . 'config.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +57,7 @@ if (isset($_SESSION['success'])) {
 <body class="login-register-page">
 
   <!-- Header -->
-  <?php include_once PATH_CONFIG .'header.php';?>
+  <?php include_once PATH_LAYOUTS .'header.php';?>
 
   <main class="main">
 
@@ -201,7 +200,7 @@ if (isset($_SESSION['success'])) {
   </main>
 
   <!-- Footer -->
-  <?php include_once PATH_CONFIG .'footer.php';?>
+  <?php include_once PATH_LAYOUTS .'footer.php';?>
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
