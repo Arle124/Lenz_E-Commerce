@@ -43,7 +43,7 @@
 <body class="tos-page">
 
   <!-- Header -->
-  <?php include_once __DIR__ . '/../../layouts/header.php'; ?>
+  <?php include_once PATH_LAYOUTS . 'header.php'; ?>
 
   <main class="main">
 
@@ -202,7 +202,7 @@
   </main>
 
   <!-- ======= Footer ======= -->
-  <?php include_once __DIR__ . '/../../layouts/footer.php'; ?>
+  <?php include_once PATH_LAYOUTS . 'footer.php'; ?>
   <!-- End Footer -->
 
   <!-- Scroll Top -->

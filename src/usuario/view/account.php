@@ -1,4 +1,5 @@
-<?php require_once __DIR__ . '/../../../config/config.php'; ?>
+<?php require_once __DIR__ . '/../../../config/autoload.php'; ?>
+<?php require_once PATH_CONFIG . 'config.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +44,7 @@
 <body class="account-page">
 
   <!-- Header -->
-  <?php require_once __DIR__ . '/../../../layouts/header.php'; ?>
+  <?php include_once PATH_LAYOUTS . 'header.php'; ?>
 
   <main class="main">
 
@@ -1057,7 +1058,7 @@
 
   </main>
 
-  <?php require_once __DIR__ . '/../../../layouts/footer.php'; ?>
+  <?php require_once PATH_LAYOUTS . 'footer.php'; ?>
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
