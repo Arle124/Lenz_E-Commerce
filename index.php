@@ -1,7 +1,24 @@
-<?php require_once __DIR__ . "/config/config.php"; ?>
+<?php
+// Iniciar sesión una sola vez, de forma segura
+if (session_status() === PHP_SESSION_NONE) {
+    // Opcional: cookies de sesión más seguras
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.use_only_cookies', 1);
+
+    session_start();
+}
+
+// Incluir configuración y autoload
+require_once __DIR__ . '/config/config.php';
+require_once __DIR__ . '/config/autoload.php';
+
+// Aquí ya puedes cargar tu layout, header, etc.
+include_once PATH_LAYOUTS . 'header.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
   <meta charset="utf-8">
@@ -40,10 +57,6 @@
 </head>
 
 <body class="index-page">
-
-  <!-- Header -->
-  <?php include_once PATH_LAYOUTS . 'header.php'; ?>
-  <!-- End Header -->
 
   <main class="main">
 

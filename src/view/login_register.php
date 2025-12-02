@@ -1,8 +1,7 @@
 <?php 
 require_once __DIR__ . '/../../config/autoload.php';
-require_once PATH_CONFIG . 'config.php';
-
-session_start();
+require_once '../controller/UsuarioController.php';
+require_once __DIR__ . '/../../config/config.php';
 
 if (isset($_SESSION['error'])) {
     echo "<div class='alert alert-danger'>{$_SESSION['error']}</div>";
@@ -72,7 +71,8 @@ if (isset($_GET['tab']) && $_GET['tab'] === 'register') {
 
               <!-- Login Form -->
               <div class="tab-pane fade <?= $activeTab === 'login' ? 'show active' : '' ?>" id="login-register-login-form">
-                <form action="../controller/UsuarioController.php?action=login" method="POST">
+                <form action="<?= BASE_URL ?>src/controller/UsuarioController.php?action=login" method="POST">
+                  <input type="hidden" name="action" value="login">
                   <div class="mb-4 password-wrapper">
                     <input type="email" class="form-control" name="correo" placeholder="Email" required>
                   </div>
@@ -90,7 +90,8 @@ if (isset($_GET['tab']) && $_GET['tab'] === 'register') {
 
               <!-- Registration Form -->
               <div class="tab-pane fade <?= $activeTab === 'register' ? 'show active' : '' ?>" id="login-register-registration-form">
-                <form action="../controller/UsuarioController.php?action=registrar" method="POST">
+                <form action="<?= BASE_URL ?>src/controller/UsuarioController.php?action=registrar" method="POST">
+                  <input type="hidden" name="action" value="registrar">
                   <div class="mb-3">
                     <input type="text" class="form-control" name="nombre" placeholder="First Name" required>
                   </div>
