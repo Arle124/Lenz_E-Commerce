@@ -51,12 +51,12 @@
             <div class="footer-widget">
               <h4>Shop</h4>
               <ul class="footer-links">
-                <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">New Arrivals</a></li>
-                <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">Bestsellers</a></li>
-                <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">Women's Clothing</a></li>
-                <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">Men's Clothing</a></li>
-                <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">Accessories</a></li>
-                <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">Sale</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/category.php">New Arrivals</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/category.php">Bestsellers</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/category.php">Women's Clothing</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/category.php">Men's Clothing</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/category.php">Accessories</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/category.php">Sale</a></li>
               </ul>
             </div>
           </div>
@@ -65,12 +65,12 @@
             <div class="footer-widget">
               <h4>Support</h4>
               <ul class="footer-links">
-                <li><a href="<?= BASE_URL ?>src/contacto/view/support.php">Help Center</a></li>
-                <li><a href="<?= BASE_URL ?>src/usuario/view/account.php">Order Status</a></li>
-                <li><a href="<?= BASE_URL ?>src/carrito/view/shiping-info.php">Shipping Info</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/support.php">Help Center</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/account.php">Order Status</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/shiping-info.php">Shipping Info</a></li>
                 <li><a href="<?= BASE_URL ?>src/static/return-policy.php">Returns &amp; Exchanges</a></li>
                 <li><a href="#">Size Guide</a></li>
-                <li><a href="<?= BASE_URL ?>src/contacto/view/contact.php">Contact Us</a></li>
+                <li><a href="<?= BASE_URL ?>src/view/contact.php">Contact Us</a></li>
               </ul>
             </div>
           </div>
