@@ -32,8 +32,8 @@
             <div class="footer-widget">
               <h4>Tienda</h4>
               <ul class="footer-links">
-                <li><a href="<?= BASE_URL ?>src/view/category.php">Recién llegados</a></li>
-                <li><a href="<?= BASE_URL ?>src/view/category.php">Más vendidos</a></li>
+                <li><a href="<?= BASE_URL ?>index.php">Recién llegados</a></li>
+                <li><a href="<?= BASE_URL ?>index.php#best-sellers">Más vendidos</a></li>
                 <li><a href="<?= BASE_URL ?>src/view/category.php">Venta</a></li>
               </ul>
             </div>

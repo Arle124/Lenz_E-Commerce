@@ -319,7 +319,7 @@
         <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
       </div><!-- End Section Title -->
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div id = "best-sellers" class="container" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row gy-4">
           <!-- Product 1 -->
