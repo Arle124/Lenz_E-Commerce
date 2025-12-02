@@ -105,7 +105,7 @@
         </div>
 
         <div class="copyright text-center">
-          <p>© <span>Copyright</span> <strong class="sitename">eStore</strong>. All Rights Reserved.</p>
+          <p>© <span>Copyright</span> <strong class="sitename">Lenz</strong>. All Rights Reserved.</p>
         </div>
 
       </div>

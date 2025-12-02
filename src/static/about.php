@@ -51,11 +51,11 @@
     <!-- Page Title -->
     <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">About</h1>
+        <h1 class="mb-2 mb-lg-0">Sobre</h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.php">Home</a></li>
-            <li class="current">About</li>
+            <li><a href="index.php">Inicio</a></li>
+            <li class="current">Sobre</li>
           </ol>
         </nav>
       </div>
@@ -66,55 +66,35 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <span class="section-badge"><i class="bi bi-info-circle"></i> About Us</span>
+        <span class="section-badge"><i class="bi bi-info-circle"></i> Sobre Nosotros</span>
         <div class="row">
           <div class="col-lg-6">
-            <h2 class="about-title">Nemo enim ipsam voluptatem quia voluptas aspernatur</h2>
-            <p class="about-description">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.</p>
+            <h2 class="about-title">Comprometidos con la calidad en tu cocina</h2>
+            <p class="about-description">
+              En LENZ COMPANY SAS ZOMAC somos distribuidora regional de productos Royal Prestige, 
+              reconocidos por su innovación y durabilidad. Nuestro objetivo es ofrecer soluciones 
+              que transformen la manera de cocinar y disfrutar cada momento en familia.
+            </p>
           </div>
           <div class="col-lg-6">
-            <p class="about-text">Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
-            <p class="about-text">Amet eos ut. Officiis soluta ab id dolor non sint. Corporis omnis consequatur quisquam ex consequuntur quo omnis. Quo eligendi cum. Amet mollitia qui quidem dolores praesentium quasi ut et.</p>
-          </div>
-        </div>
-
-        <div class="row features-boxes gy-4 mt-3">
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="feature-box">
-              <div class="icon-box">
-                <i class="bi bi-bullseye"></i>
-              </div>
-              <h3><a href="#" class="stretched-link">At vero eos</a></h3>
-              <p>Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="feature-box">
-              <div class="icon-box">
-                <i class="bi bi-person-check"></i>
-              </div>
-              <h3><a href="#" class="stretched-link">Sed ut perspiciatis</a></h3>
-              <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque.</p>
-            </div>
-          </div>
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="400">
-            <div class="feature-box">
-              <div class="icon-box">
-                <i class="bi bi-clipboard-data"></i>
-              </div>
-              <h3><a href="#" class="stretched-link">Nemo enim ipsam</a></h3>
-              <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam.</p>
-            </div>
+            <p class="about-text">
+              Contamos con un portafolio que incluye purificadores de agua, ollas, parrillas, 
+              cuchillería y más, diseñados para brindar confianza y estilo en cada preparación.
+            </p>
+            <p class="about-text">
+              Nuestra misión es acompañar a los hogares con productos de alta calidad que 
+              promuevan bienestar, salud y experiencias culinarias únicas, respaldados por 
+              la excelencia de Royal Prestige.
+            </p>
           </div>
         </div>
 
         <div class="row mt-5">
           <div class="col-lg-12" data-aos="zoom-in" data-aos-delay="200">
             <div class="video-box">
-              <img src="assets/img/about/about-wide-1.webp" class="img-fluid" alt="Video Thumbnail">
-              <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox pulsating-play-btn"></a>
+              
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/QIU2gOuwUBQ?si=OlZjKVNAWF-tn2lc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
             </div>
           </div>
         </div>
@@ -122,44 +102,6 @@
       </div>
 
     </section><!-- /About 2 Section -->
-
-    <!-- Stats Section -->
-    <section id="stats" class="stats section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row align-items-center">
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="avatars d-flex align-items-center">
-              <img src="assets/img/person/person-m-2.webp" alt="Avatar 1" class="rounded-circle" loading="lazy">
-              <img src="assets/img/person/person-m-3.webp" alt="Avatar 2" class="rounded-circle" loading="lazy">
-              <img src="assets/img/person/person-f-5.webp" alt="Avatar 3" class="rounded-circle" loading="lazy">
-              <img src="assets/img/person/person-m-5.webp" alt="Avatar 4" class="rounded-circle" loading="lazy">
-            </div>
-          </div>
-
-          <div class="col-lg-8">
-            <div class="row counters">
-              <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                <h2><span data-purecounter-start="0" data-purecounter-end="185" data-purecounter-duration="1" class="purecounter"></span>+</h2>
-                <p>Nemo enim ipsam</p>
-              </div>
-
-              <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
-                <h2><span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>K</h2>
-                <p>Voluptatem sequi</p>
-              </div>
-
-              <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
-                <h2><span data-purecounter-start="0" data-purecounter-end="128" data-purecounter-duration="1" class="purecounter"></span>+</h2>
-                <p>Dolor sit consectetur</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </section><!-- /Stats Section -->
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section">
@@ -176,7 +118,7 @@
               <p>Implementing innovative strategies has revolutionized our approach to market challenges and competitive positioning.</p>
               <div class="client-info">
                 <div class="client-image">
-                  <img src="assets/img/person/person-f-7.webp" alt="Client">
+                  <img src="<?=BASE_URL ?>assets/img/person/person-f-7.webp" alt="Client">
                 </div>
                 <div class="client-details">
                   <h3>Rachel Bennett</h3>
@@ -194,7 +136,7 @@
               <p>Exceptional service delivery and innovative solutions have transformed our business operations, leading to remarkable growth and enhanced customer satisfaction across all touchpoints.</p>
               <div class="client-info">
                 <div class="client-image">
-                  <img src="assets/img/person/person-m-7.webp" alt="Client">
+                  <img src="<?=BASE_URL ?>assets/img/person/person-m-7.webp" alt="Client">
                 </div>
                 <div class="client-details">
                   <h3>Daniel Morgan</h3>
@@ -212,7 +154,7 @@
               <p>Strategic partnership has enabled seamless digital transformation and operational excellence.</p>
               <div class="client-info">
                 <div class="client-image">
-                  <img src="assets/img/person/person-f-8.webp" alt="Client">
+                  <img src="<?=BASE_URL ?>assets/img/person/person-f-8.webp" alt="Client">
                 </div>
                 <div class="client-details">
                   <h3>Emma Thompson</h3>
@@ -230,7 +172,7 @@
               <p>Professional expertise and dedication have significantly improved our project delivery timelines and quality metrics.</p>
               <div class="client-info">
                 <div class="client-image">
-                  <img src="assets/img/person/person-m-8.webp" alt="Client">
+                  <img src="<?=BASE_URL ?>assets/img/person/person-m-8.webp" alt="Client">
                 </div>
                 <div class="client-details">
                   <h3>Christopher Lee</h3>
@@ -248,7 +190,7 @@
               <p>Collaborative approach and industry expertise have revolutionized our product development cycle, resulting in faster time-to-market and increased customer engagement levels.</p>
               <div class="client-info">
                 <div class="client-image">
-                  <img src="assets/img/person/person-f-9.webp" alt="Client">
+                  <img src="<?=BASE_URL ?>assets/img/person/person-f-9.webp" alt="Client">
                 </div>
                 <div class="client-details">
                   <h3>Olivia Carter</h3>
@@ -266,7 +208,7 @@
               <p>Innovative approach to user experience design has significantly enhanced our platform's engagement metrics and customer retention rates.</p>
               <div class="client-info">
                 <div class="client-image">
-                  <img src="assets/img/person/person-m-13.webp" alt="Client">
+                  <img src="<?=BASE_URL ?>assets/img/person/person-m-13.webp" alt="Client">
                 </div>
                 <div class="client-details">
                   <h3>Nathan Brooks</h3>
