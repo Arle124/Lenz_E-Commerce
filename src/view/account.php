@@ -109,24 +109,6 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#wallet">
-                      <i class="bi bi-wallet2"></i>
-                      <span>Payment Methods</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#reviews">
-                      <i class="bi bi-star"></i>
-                      <span>My Reviews</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#addresses">
-                      <i class="bi bi-geo-alt"></i>
-                      <span>Addresses</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="tab" href="#settings">
                       <i class="bi bi-gear"></i>
                       <span>Account Settings</span>
@@ -221,8 +203,8 @@
                               <i class="bi bi-check-circle-fill"></i>
                             </div>
                             <div class="timeline-content">
-                              <h5>Order Confirmed</h5>
-                              <p>Your order has been received and confirmed</p>
+                              <h5>Orden realizada.</h5>
+                              <p>tu orden ha sido resibida via whats App, pronto alguien se comunicar con usted.</p>
                               <span class="timeline-date">Feb 20, 2025 - 10:30 AM</span>
                             </div>
                           </div>
@@ -232,8 +214,8 @@
                               <i class="bi bi-check-circle-fill"></i>
                             </div>
                             <div class="timeline-content">
-                              <h5>Processing</h5>
-                              <p>Your order is being prepared for shipment</p>
+                              <h5>procesando</h5>
+                                <p>Tu orden fue recibida y está siendo procesada.</p>
                               <span class="timeline-date">Feb 20, 2025 - 2:45 PM</span>
                             </div>
                           </div>
@@ -243,8 +225,8 @@
                               <i class="bi bi-box-seam"></i>
                             </div>
                             <div class="timeline-content">
-                              <h5>Packaging</h5>
-                              <p>Your items are being packaged for shipping</p>
+                              <h5>Aprobada</h5>
+                              <p>Tu orden ha sido aprobada esperando confirmación de pago</p>
                               <span class="timeline-date">Feb 20, 2025 - 4:15 PM</span>
                             </div>
                           </div>
@@ -254,8 +236,8 @@
                               <i class="bi bi-truck"></i>
                             </div>
                             <div class="timeline-content">
-                              <h5>In Transit</h5>
-                              <p>Expected to ship within 24 hours</p>
+                              <h5>Confirmada</h5>
+                              <p>tu orden ha sido confirmada</p>
                             </div>
                           </div>
 
@@ -264,8 +246,8 @@
                               <i class="bi bi-house-door"></i>
                             </div>
                             <div class="timeline-content">
-                              <h5>Delivery</h5>
-                              <p>Estimated delivery: Feb 22, 2025</p>
+                              <h5>Terminada</h5>
+                              <p>tu orden ha sido terminada</p>
                             </div>
                           </div>
                         </div>
@@ -361,217 +343,6 @@
                         </div>
                       </div>
                     </div>
-
-                    <!-- Order Card 2 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">Order ID:</span>
-                          <span class="value">#ORD-2024-1265</span>
-                        </div>
-                        <div class="order-date">Feb 15, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-4.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-5.webp" alt="Product" loading="lazy">
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Status</span>
-                            <span class="status shipped">Shipped</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Items</span>
-                            <span>2 items</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$459.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking2" aria-expanded="false">Track Order</button>
-                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details2" aria-expanded="false">View Details</button>
-                      </div>
-
-                      <!-- Order Tracking -->
-                      <div class="collapse tracking-info" id="tracking2">
-                        <div class="tracking-timeline">
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Order Confirmed</h5>
-                              <p>Your order has been received and confirmed</p>
-                              <span class="timeline-date">Feb 15, 2025 - 9:15 AM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Processing</h5>
-                              <p>Your order is being prepared for shipment</p>
-                              <span class="timeline-date">Feb 15, 2025 - 11:30 AM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Packaging</h5>
-                              <p>Your items have been packaged for shipping</p>
-                              <span class="timeline-date">Feb 15, 2025 - 2:45 PM</span>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item active">
-                            <div class="timeline-icon">
-                              <i class="bi bi-truck"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>In Transit</h5>
-                              <p>Package in transit with carrier</p>
-                              <span class="timeline-date">Feb 16, 2025 - 10:20 AM</span>
-                              <div class="shipping-info">
-                                <span>Tracking Number: </span>
-                                <span class="tracking-number">1Z999AA1234567890</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="timeline-item">
-                            <div class="timeline-icon">
-                              <i class="bi bi-house-door"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Delivery</h5>
-                              <p>Estimated delivery: Feb 18, 2025</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Order Details -->
-                      <div class="collapse order-details" id="details2">
-                        <div class="details-content">
-                          <div class="detail-section">
-                            <h5>Order Information</h5>
-                            <div class="info-grid">
-                              <div class="info-item">
-                                <span class="label">Payment Method</span>
-                                <span class="value">Credit Card (**** 7821)</span>
-                              </div>
-                              <div class="info-item">
-                                <span class="label">Shipping Method</span>
-                                <span class="value">Standard Shipping (3-5 days)</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Items (2)</h5>
-                            <div class="order-items">
-                              <div class="item">
-                                <img src="assets/img/product/product-4.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Ut enim ad minim veniam</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-004</span>
-                                    <span class="qty">Qty: 1</span>
-                                  </div>
-                                </div>
-                                <div class="item-price">$299.99</div>
-                              </div>
-
-                              <div class="item">
-                                <img src="assets/img/product/product-5.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Quis nostrud exercitation</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-005</span>
-                                    <span class="qty">Qty: 1</span>
-                                  </div>
-                                </div>
-                                <div class="item-price">$159.99</div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Price Details</h5>
-                            <div class="price-breakdown">
-                              <div class="price-row">
-                                <span>Subtotal</span>
-                                <span>$459.98</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Shipping</span>
-                                <span>$9.99</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Tax</span>
-                                <span>$38.02</span>
-                              </div>
-                              <div class="price-row total">
-                                <span>Total</span>
-                                <span>$459.99</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Shipping Address</h5>
-                            <div class="address-info">
-                              <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                              <p class="contact">+1 (555) 123-4567</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Order Card 3 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="300">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">Order ID:</span>
-                          <span class="value">#ORD-2024-1252</span>
-                        </div>
-                        <div class="order-date">Feb 10, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-6.webp" alt="Product" loading="lazy">
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Status</span>
-                            <span class="status delivered">Delivered</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Items</span>
-                            <span>1 item</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$129.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-review">Write Review</button>
-                        <button type="button" class="btn-details">View Details</button>
-                      </div>
-                    </div>
-
                     <!-- Order Card 4 -->
                     <div class="order-card" data-aos="fade-up" data-aos-delay="400">
                       <div class="order-header">
@@ -666,271 +437,6 @@
                         <button type="button" class="btn-add-cart">Add to Cart</button>
                       </div>
                     </div>
-
-                    <!-- Wishlist Item 2 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Consectetur adipiscing elit</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span>(4.0)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$149.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-add-cart">Add to Cart</button>
-                      </div>
-                    </div>
-
-                    <!-- Wishlist Item 3 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="300">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="out-of-stock-badge">Out of Stock</div>
-                      </div>
-                      <div class="wishlist-content">
-                        <h4>Sed do eiusmod tempor</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span>(5.0)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$199.99</span>
-                          </div>
-                        </div>
-                        <button type="button" class="btn-notify">Notify When Available</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Payment Methods Tab -->
-                <div class="tab-pane fade" id="wallet">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>Payment Methods</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-new">
-                        <i class="bi bi-plus-lg"></i>
-                        Add New Card
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="payment-cards-grid">
-                    <!-- Payment Card 1 -->
-                    <div class="payment-card default" data-aos="fade-up" data-aos-delay="100">
-                      <div class="card-header">
-                        <i class="bi bi-credit-card"></i>
-                        <div class="card-badges">
-                          <span class="default-badge">Default</span>
-                          <span class="card-type">Visa</span>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div class="card-number">•••• •••• •••• 4589</div>
-                        <div class="card-info">
-                          <span>Expires 09/2026</span>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Edit
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Payment Card 2 -->
-                    <div class="payment-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="card-header">
-                        <i class="bi bi-credit-card"></i>
-                        <div class="card-badges">
-                          <span class="card-type">Mastercard</span>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div class="card-number">•••• •••• •••• 7821</div>
-                        <div class="card-info">
-                          <span>Expires 05/2025</span>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Edit
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Remove
-                        </button>
-                        <button type="button" class="btn-make-default">Make Default</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Reviews Tab -->
-                <div class="tab-pane fade" id="reviews">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>My Reviews</h2>
-                    <div class="header-actions">
-                      <div class="dropdown">
-                        <button class="filter-btn" data-bs-toggle="dropdown">
-                          <i class="bi bi-funnel"></i>
-                          <span>Sort by: Recent</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Recent</a></li>
-                          <li><a class="dropdown-item" href="#">Highest Rating</a></li>
-                          <li><a class="dropdown-item" href="#">Lowest Rating</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="reviews-grid">
-                    <!-- Review Card 1 -->
-                    <div class="review-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="review-header">
-                        <img src="assets/img/product/product-1.webp" alt="Product" class="product-image" loading="lazy">
-                        <div class="review-meta">
-                          <h4>Lorem ipsum dolor sit amet</h4>
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <span>(5.0)</span>
-                          </div>
-                          <div class="review-date">Reviewed on Feb 15, 2025</div>
-                        </div>
-                      </div>
-                      <div class="review-content">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                      </div>
-                      <div class="review-footer">
-                        <button type="button" class="btn-edit">Edit Review</button>
-                        <button type="button" class="btn-delete">Delete</button>
-                      </div>
-                    </div>
-
-                    <!-- Review Card 2 -->
-                    <div class="review-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="review-header">
-                        <img src="assets/img/product/product-2.webp" alt="Product" class="product-image" loading="lazy">
-                        <div class="review-meta">
-                          <h4>Consectetur adipiscing elit</h4>
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
-                            <span>(4.0)</span>
-                          </div>
-                          <div class="review-date">Reviewed on Feb 10, 2025</div>
-                        </div>
-                      </div>
-                      <div class="review-content">
-                        <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                      </div>
-                      <div class="review-footer">
-                        <button type="button" class="btn-edit">Edit Review</button>
-                        <button type="button" class="btn-delete">Delete</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Addresses Tab -->
-                <div class="tab-pane fade" id="addresses">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>My Addresses</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-new">
-                        <i class="bi bi-plus-lg"></i>
-                        Add New Address
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="addresses-grid">
-                    <!-- Address Card 1 -->
-                    <div class="address-card default" data-aos="fade-up" data-aos-delay="100">
-                      <div class="card-header">
-                        <h4>Home</h4>
-                        <span class="default-badge">Default</span>
-                      </div>
-                      <div class="card-body">
-                        <p class="address-text">123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                        <div class="contact-info">
-                          <div><i class="bi bi-person"></i> Sarah Anderson</div>
-                          <div><i class="bi bi-telephone"></i> +1 (555) 123-4567</div>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Edit
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-
-                    <!-- Address Card 2 -->
-                    <div class="address-card" data-aos="fade-up" data-aos-delay="200">
-                      <div class="card-header">
-                        <h4>Office</h4>
-                      </div>
-                      <div class="card-body">
-                        <p class="address-text">456 Business Ave<br>Suite 200<br>San Francisco, CA 94107<br>United States</p>
-                        <div class="contact-info">
-                          <div><i class="bi bi-person"></i> Sarah Anderson</div>
-                          <div><i class="bi bi-telephone"></i> +1 (555) 987-6543</div>
-                        </div>
-                      </div>
-                      <div class="card-actions">
-                        <button type="button" class="btn-edit">
-                          <i class="bi bi-pencil"></i>
-                          Edit
-                        </button>
-                        <button type="button" class="btn-remove">
-                          <i class="bi bi-trash"></i>
-                          Remove
-                        </button>
-                        <button type="button" class="btn-make-default">Make Default</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 <!-- Settings Tab -->
                 <div class="tab-pane fade" id="settings">

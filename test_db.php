@@ -1,6 +1,7 @@
 <?php
 require_once "src/model/UsuarioModel.php";
 
+
 $model = new UsuarioModel();
 
 // 1. Listar usuarios
@@ -14,12 +15,12 @@ echo "<pre>"; print_r($usuarios); echo "</pre>";
 // echo "<pre>"; print_r($idNuevo); echo "</pre>";
 
 // 3. Login usuario
-$usuario = $model->login("javierrico040602@gmail.com");
-echo "<h2>Login Usuario:</h2>";
-echo "<pre>"; print_r($usuario); echo "</pre>";
+// $usuario = $model->login("javierrico040602@gmail.com");
+// echo "<h2>Login Usuario:</h2>";
+// echo "<pre>"; print_r($usuario); echo "</pre>";
 
 // 4. Obtener roles del usuario
-$roles = $model->obtenerRoles($usuario['id_usuario'] ?? 0);
+$roles = $model->obtenerRoles(1);
 echo "<h2>Roles del Usuario:</h2>";
 echo "<pre>"; print_r($roles); echo "</pre>";
 ?>
