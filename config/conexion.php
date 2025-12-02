@@ -2,7 +2,7 @@
 class Database {
 
     private $host = "localhost";
-    private $dbname = "lenz_db";
+    private $dbname = "bd_lenz";
     private $usuario = "root";
     private $password = "";
     private static $conexion = null;
@@ -10,7 +10,7 @@ class Database {
     public static function conectar() {
         if (self::$conexion == null) {
 
-            $dsn = "mysql:host=localhost;dbname=lenz_db;charset=utf8mb4";
+            $dsn = "mysql:host=localhost;dbname=bd_lenz;charset=utf8mb4";
 
             try {
                 self::$conexion = new PDO($dsn, "root", "");
