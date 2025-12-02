@@ -79,38 +79,38 @@
                   <p class="mb-0">Access account &amp; manage orders</p>
                 </div>
                 <div class="dropdown-body">
-                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/usuario/view/account.php">
+                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/account.php">
                     <i class="bi bi-person-circle me-2"></i>
                     <span>My Profile</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/usuario/view/account.php">
+                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/account.php">
                     <i class="bi bi-bag-check me-2"></i>
                     <span>My Orders</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/usuario/view/account.php">
+                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/account.php">
                     <i class="bi bi-heart me-2"></i>
                     <span>My Wishlist</span>
                   </a>
-                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/usuario/view/account.php">
+                  <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/account.php">
                     <i class="bi bi-gear me-2"></i>
                     <span>Settings</span>
                   </a>
                 </div>
                 <div class="dropdown-footer">
-                  <a href="<?= BASE_URL ?>src/usuario/view/login_register.php" class="btn btn-primary w-100 mb-2">Sign In</a>
-                  <a href="<?= BASE_URL ?>src/usuario/view/login_register.php" class="btn btn-outline-primary w-100">Register</a>
+                  <a href="<?= BASE_URL ?>src/view/login_register.php" class="btn btn-primary w-100 mb-2">Sign In</a>
+                  <a href="<?= BASE_URL ?>src/view/login_register.php" class="btn btn-outline-primary w-100">Register</a>
                 </div>
               </div>
             </div>
 
             <!-- Wishlist -->
-            <a href="<?= BASE_URL ?>src/usuario/view/account.php" class="header-action-btn d-none d-md-block">
+            <a href="<?= BASE_URL ?>src/view/account.php" class="header-action-btn d-none d-md-block">
               <i class="bi bi-heart"></i>
               <span class="badge">0</span>
             </a>
 
             <!-- Cart -->
-            <a href="<?= BASE_URL ?>src/carrito/view/cart.php" class="header-action-btn">
+            <a href="<?= BASE_URL ?>src/view/cart.php" class="header-action-btn">
               <i class="bi bi-cart3"></i>
               <span class="badge">3</span>
             </a>
