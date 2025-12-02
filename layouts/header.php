@@ -97,9 +97,10 @@
                   </a>
                 </div>
                 <div class="dropdown-footer">
-                  <a href="<?= BASE_URL ?>src/view/login_register.php" class="btn btn-primary w-100 mb-2">Sign In</a>
-                  <a href="<?= BASE_URL ?>src/view/login_register.php" class="btn btn-outline-primary w-100">Register</a>
+                  <a href="<?= BASE_URL ?>src/view/login_register.php?tab=login" class="btn btn-primary w-100 mb-2">Sign In</a>
+                  <a href="<?= BASE_URL ?>src/view/login_register.php?tab=register" class="btn btn-outline-primary w-100">Register</a>
                 </div>
+
               </div>
             </div>
 

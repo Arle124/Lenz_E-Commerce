@@ -12204,3 +12204,25 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 60%);
   font-size: 14px;
 }
+/* Solo para login/register */
+.login-register-page .password-wrapper {
+    position: relative; /* necesario para el ícono */
+    display: flex;
+    align-items: center; /* centra verticalmente */
+}
+
+.login-register-page .password-toggle {
+    position: absolute;
+    right: 10px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #555;
+}
+
+.login-register-page .password-wrapper input[type="password"],
+.login-register-page .password-wrapper input[type="text"] {
+    flex: 1;
+    padding-right: 45px; /* espacio para el ícono */
+    height: 50px;
+}
+

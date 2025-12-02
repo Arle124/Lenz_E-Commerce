@@ -46,13 +46,14 @@ class UsuarioController {
 
             if ($idNuevo === "correo_existente") {
                 $_SESSION['error'] = "El correo ya está registrado.";
+                header("Location: ../view/login_register.php?tab=register");
             } elseif ($idNuevo) {
                 $_SESSION['success'] = "¡Cuenta creada correctamente! Ahora puedes iniciar sesión.";
+                header("Location: ../view/login_register.php?tab=login");
             } else {
                 $_SESSION['error'] = "No se pudo registrar el usuario.";
+                header("Location: ../view/login_register.php?tab=register");
             }
-
-            header("Location: ../view/login_register.php");
             exit();
         }
     }
@@ -77,13 +78,13 @@ class UsuarioController {
 
             if (!$usuario) {
                 $_SESSION['error'] = "Correo no registrado.";
-                header("Location: ../view/login_register.php");
+                header("Location: ../view/login_register.php?tab=login");
                 exit();
             }
 
             if ($usuario['estado'] !== 'activo') {
                 $_SESSION['error'] = "Tu usuario se encuentra inactivo.";
-                header("Location: ../view/login_register.php");
+                header("Location: ../view/login_register.php?tab=login");
                 exit();
             }
 
