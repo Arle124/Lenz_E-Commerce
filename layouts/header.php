@@ -131,10 +131,10 @@
             <ul>
               <li><a href="<?= BASE_URL ?>index.php" class="active">Inicio</a></li>
               <li><a href="<?= BASE_URL ?>src/static/about.php">Sobre</a></li>
-              <li><a href="<?= BASE_URL ?>src/tienda/view/category.php">Categoría</a></li>
-              <li><a href="<?= BASE_URL ?>src/tienda/view/product-details.php">Detalles de Productos</a></li>
-              <li><a href="<?= BASE_URL ?>src/carrito/view/cart.php">Carrito</a></li>
-              <li><a href="<?= BASE_URL ?>src/carrito/view/checkout.php">Pago</a></li>
+              <li><a href="<?= BASE_URL ?>src/view/category.php">Categoría</a></li>
+              <li><a href="<?= BASE_URL ?>src/view/product-details.php">Detalles de Productos</a></li>
+              <li><a href="<?= BASE_URL ?>src/view/cart.php">Carrito</a></li>
+              <li><a href="<?= BASE_URL ?>src/view/checkout.php">Pago</a></li>
 
               <!-- Products Mega Menu 1 -->
               <li class="products-megamenu-1"><a href="#"><span>Megamenu 1</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
@@ -409,7 +409,7 @@
 
               </li><!-- End Products Mega Menu 1 -->
 
-              <li><a href="<?= BASE_URL ?>src/contacto/view/contact.php">Contacto</a></li>
+              <li><a href="<?= BASE_URL ?>src/view/contact.php">Contacto</a></li>
 
             </ul>
           </nav>

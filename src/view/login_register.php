@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../../../config/autoload.php'; ?>
+<?php require_once __DIR__ . '/../../config/autoload.php'; ?>
 <?php require_once PATH_CONFIG . 'config.php';?>
 
 <?php
@@ -57,7 +57,7 @@ if (isset($_SESSION['success'])) {
 <body class="login-register-page">
 
   <!-- Header -->
-  <?php include_once PATH_LAYOUTS .'header.php';?>
+  <?php include_once PATH_LAYOUTS . 'header.php';?>
 
   <main class="main">
 
