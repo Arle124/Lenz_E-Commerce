@@ -1,13 +1,24 @@
 <?php require_once __DIR__ . '/../../config/autoload.php'; ?>
-<?php require_once PATH_CONFIG . 'config.php'; ?>
+<?php require_once __DIR__ . "/../../config/sesion.php"; ?>
+<?php require_once "../../layouts/header.php"; ?>
 
+
+<?php require_once PATH_CONFIG . 'config.php'; 
+// Verificar sesión
+if (!isset($_SESSION['usuario'])) {
+    header("Location: login_register.php?tab=login");
+    exit;
+}
+
+$u = $_SESSION['usuario'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Account - eStore Bootstrap Template</title>
+  <title>Account - Lenz</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -44,35 +55,14 @@
 <body class="account-page">
 
   <!-- Header -->
-  <?php include_once PATH_LAYOUTS . 'header.php'; ?>
+  
 
   <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title light-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Account</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Account</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
 
     <!-- Account Section -->
     <section id="account" class="account section">
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <!-- Mobile Menu Toggle -->
-        <div class="mobile-menu d-lg-none mb-4">
-          <button class="mobile-menu-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#profileMenu">
-            <i class="bi bi-grid"></i>
-            <span>Menu</span>
-          </button>
-        </div>
 
         <div class="row g-4">
           <!-- Profile Menu -->
@@ -84,10 +74,8 @@
                   <img src="assets/img/person/person-f-1.webp" alt="Profile" loading="lazy">
                   <span class="status-badge"><i class="bi bi-shield-check"></i></span>
                 </div>
-                <h4>Sarah Anderson</h4>
+                <h4><strong>Nombre:</strong> <?= htmlspecialchars($u['nombre']) ?> <?= htmlspecialchars($u['apellido']) ?></h4>
                 <div class="user-status">
-                  <i class="bi bi-award"></i>
-                  <span>Premium Member</span>
                 </div>
               </div>
 

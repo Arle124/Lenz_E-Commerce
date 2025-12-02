@@ -1,5 +1,8 @@
 <?php
+require_once __DIR__ . "/../../config/sesion.php";
+
 require_once "../model/UsuarioModel.php";
+
 require_once __DIR__ . '/../../config/config.php';
 
 class UsuarioController {
@@ -88,20 +91,30 @@ class UsuarioController {
                 exit();
             }
 
-            if (!password_verify($password, $usuario['password'])) {
+            // Verificar contraseña
+            if (!password_verify($password, $usuario['clave'])) {
                 $_SESSION['error'] = "Contraseña incorrecta.";
                 header("Location: ../view/login_register.php");
                 exit();
             }
 
-            // Guardar datos de sesión
-            $_SESSION['usuario_id'] = $usuario['id_usuario'];
-            $_SESSION['usuario_nombre'] = $usuario['nombre'];
-            $_SESSION['usuario_rol'] = $this->model->obtenerRoles($usuario['id_usuario']);
+            // Obtener roles
+            $roles = $this->model->obtenerRoles($usuario['id_usuario']);
 
-            header("Location: ../../../index.php");
+            // Guardar todo en sesión en un solo array
+            $_SESSION['usuario'] = [
+                'id'       => $usuario['id_usuario'],
+                'nombre'   => $usuario['nombres'],
+                'apellido' => $usuario['apellidos'],
+                'correo'   => $usuario['correo'],
+                'telefono' => $usuario['telefono'],
+                'roles'    => $roles
+            ];
+
+            header("Location: ../../index.php");
             exit();
         }
+
     }
 
     // =====================================================
@@ -113,7 +126,7 @@ class UsuarioController {
         header("Location: ../view/login_register.php");
         exit();
     }
-
+    
 
     // =====================================================
     // LISTAR USUARIOS (ADMIN)
@@ -174,23 +187,22 @@ class UsuarioController {
     }
 }
 
-// Ejecutar acción recibida por GET
-$controller = new UsuarioController();
-$action = $_POST['action'] ?? $_GET['action'] ?? '';
-if ($action) {
-    switch ($action) {
-        case 'registrar': $controller->registrar(); break;
-        case 'login': $controller->login(); break;
-        case 'logout': $controller->logout(); break;
-        case 'listar': $controller->listarUsuarios(); break;
-        case 'obtener': $controller->obtenerUsuario(); break;
-        case 'estado': $controller->cambiarEstado(); break;
-        case 'rol': $controller->asignarRol(); break;
-        default:
-            $_SESSION['error'] = "Acción no válida.";
-            header("Location: ../view/login_register.php");
-            exit();
+    // Ejecutar acción recibida por GET
+    $controller = new UsuarioController();
+    $action = $_POST['action'] ?? $_GET['action'] ?? '';
+    if ($action) {
+        switch ($action) {
+            case 'registrar': $controller->registrar(); break;
+            case 'login': $controller->login(); break;
+            case 'logout': $controller->logout(); break;
+            case 'listar': $controller->listarUsuarios(); break;
+            case 'obtener': $controller->obtenerUsuario(); break;
+            case 'estado': $controller->cambiarEstado(); break;
+            case 'rol': $controller->asignarRol(); break;
+            default:
+                $_SESSION['error'] = "Acción no válida.";
+                header("Location: ../view/login_register.php");
+                exit();
+        }
     }
-}
-
 ?>

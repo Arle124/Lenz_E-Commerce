@@ -1,5 +1,3 @@
-<?php require_once __DIR__ . '/../config/config.php'; ?>
-
 <header id="header" class="header position-relative">
     <!-- Top Bar -->
     <div class="top-bar py-2">

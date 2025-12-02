@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../config/autoload.php';
 require_once '../controller/UsuarioController.php';
 require_once __DIR__ . '/../../config/config.php';
+include_once PATH_LAYOUTS . 'header.php';
 
 if (isset($_SESSION['error'])) {
     echo "<div class='alert alert-danger'>{$_SESSION['error']}</div>";
@@ -39,7 +40,7 @@ if (isset($_GET['tab']) && $_GET['tab'] === 'register') {
 </head>
 <body class="login-register-page">
 
-<?php include_once PATH_LAYOUTS . 'header.php'; ?>
+
 
 <main class="main">
 

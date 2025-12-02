@@ -1,13 +1,4 @@
 <?php
-// Iniciar sesión una sola vez, de forma segura
-if (session_status() === PHP_SESSION_NONE) {
-    // Opcional: cookies de sesión más seguras
-    ini_set('session.cookie_httponly', 1);
-    ini_set('session.use_only_cookies', 1);
-
-    session_start();
-}
-
 // Incluir configuración y autoload
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/autoload.php';
