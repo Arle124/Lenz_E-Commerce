@@ -1,12 +1,13 @@
 <?php
 require_once "../model/UsuarioModel.php";
+require_once __DIR__ . '/../../config/config.php';
 
 class UsuarioController {
 
     private $model;
 
     public function __construct() {
-        session_start();
+        // session_start();
         $this->model = new UsuarioModel();
     }
 
@@ -46,14 +47,13 @@ class UsuarioController {
 
             if ($idNuevo === "correo_existente") {
                 $_SESSION['error'] = "El correo ya está registrado.";
-                header("Location: ../view/login_register.php?tab=register");
             } elseif ($idNuevo) {
                 $_SESSION['success'] = "¡Cuenta creada correctamente! Ahora puedes iniciar sesión.";
-                header("Location: ../view/login_register.php?tab=login");
             } else {
                 $_SESSION['error'] = "No se pudo registrar el usuario.";
-                header("Location: ../view/login_register.php?tab=register");
             }
+
+            header("Location: ../view/login_register.php");
             exit();
         }
     }
@@ -78,13 +78,13 @@ class UsuarioController {
 
             if (!$usuario) {
                 $_SESSION['error'] = "Correo no registrado.";
-                header("Location: ../view/login_register.php?tab=login");
+                header("Location: ../view/login_register.php");
                 exit();
             }
 
             if ($usuario['estado'] !== 'activo') {
                 $_SESSION['error'] = "Tu usuario se encuentra inactivo.";
-                header("Location: ../view/login_register.php?tab=login");
+                header("Location: ../view/login_register.php");
                 exit();
             }
 
@@ -108,10 +108,12 @@ class UsuarioController {
     // LOGOUT
     // =====================================================
     public function logout() {
-        session_destroy();
+        session_unset();    // limpia variables
+        session_destroy();  // destruye la sesión
         header("Location: ../view/login_register.php");
         exit();
     }
+
 
     // =====================================================
     // LISTAR USUARIOS (ADMIN)
@@ -174,18 +176,21 @@ class UsuarioController {
 
 // Ejecutar acción recibida por GET
 $controller = new UsuarioController();
-
-$action = $_GET['action'] ?? '';
-
-switch ($action) {
-    case 'registrar': $controller->registrar(); break;
-    case 'login': $controller->login(); break;
-    case 'logout': $controller->logout(); break;
-    case 'listar': $controller->listarUsuarios(); break;
-    case 'obtener': $controller->obtenerUsuario(); break;
-    case 'estado': $controller->cambiarEstado(); break;
-    case 'rol': $controller->asignarRol(); break;
-    default:
-        echo "Acción no válida.";
+$action = $_POST['action'] ?? $_GET['action'] ?? '';
+if ($action) {
+    switch ($action) {
+        case 'registrar': $controller->registrar(); break;
+        case 'login': $controller->login(); break;
+        case 'logout': $controller->logout(); break;
+        case 'listar': $controller->listarUsuarios(); break;
+        case 'obtener': $controller->obtenerUsuario(); break;
+        case 'estado': $controller->cambiarEstado(); break;
+        case 'rol': $controller->asignarRol(); break;
+        default:
+            $_SESSION['error'] = "Acción no válida.";
+            header("Location: ../view/login_register.php");
+            exit();
+    }
 }
+
 ?>
