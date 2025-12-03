@@ -114,5 +114,41 @@ class PedidoModel {
         $stmt->execute([':id' => $idUsuario]);
         $stmt->closeCursor();
     }
+    public function listarPedidosAdmin(): array {
+        $stmt = $this->conn->prepare("CALL sp_admin_listar_pedidos()");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $stmt->closeCursor();
+        return $rows;
+    }
+    public function registrarTracking(int $idPedido, int $estado, string $descripcion, int $usuario): bool {
+        $sql = "CALL sp_registrar_tracking(:p_id_pedido, :p_id_estado, :p_descripcion, :p_usuario)";
+        $stmt = $this->conn->prepare($sql);
+
+        $ok = $stmt->execute([
+            ':p_id_pedido' => $idPedido,
+            ':p_id_estado' => $estado,
+            ':p_descripcion' => $descripcion,
+            ':p_usuario' => $usuario
+        ]);
+
+        $stmt->closeCursor();
+        return $ok;
+    }
+
+    public function cambiarEstadoPedido(int $idPedido, int $nuevoEstado, int $usuario): bool {
+        $sql = "CALL sp_cambiar_estado_pedido(:p_id_pedido, :p_nuevo_estado, :p_usuario_responsable)";
+        $stmt = $this->conn->prepare($sql);
+
+        $ok = $stmt->execute([
+            ':p_id_pedido' => $idPedido,
+            ':p_nuevo_estado' => $nuevoEstado,
+            ':p_usuario_responsable' => $usuario
+        ]);
+
+        $stmt->closeCursor();
+        return $ok;
+    }
+
 
 }

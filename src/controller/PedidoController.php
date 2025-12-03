@@ -93,4 +93,9 @@ class PedidoController {
         header("Location: " . BASE_URL . "src/view/account.php#settings");
         exit;
     }
+    public function pedidosAdmin(): array {
+        // aquí asumo que ya tienes $this->model = new PedidoModel();
+        return $this->model->listarPedidosAdmin();
+    }
+
 }

@@ -8,8 +8,8 @@ if (!isset($_SESSION['usuario']['id'])) {
 }
 
 $rolId = (int)($_SESSION['usuario']['rol_id'] ?? 0);
-if (!in_array($rolId, [2,3], true)) {
-  $_SESSION['error'] = "No tienes permiso para ver esta sección.";
+if ($rolId !== 3) {
+  $_SESSION['error'] = "Solo el dueño puede acceder aquí.";
   header("Location: " . BASE_URL . "index.php");
   exit;
 }
