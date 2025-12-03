@@ -97,19 +97,22 @@ class UsuarioController {
                 header("Location: ../view/login_register.php");
                 exit();
             }
+            $rolesBD = $this->model->obtenerRoles($usuario['id_usuario']);
 
-            // Obtener roles
-            $roles = $this->model->obtenerRoles($usuario['id_usuario']);
+            // Convertir [[rol],[rol]] → ["cliente", "duenio"]
+            $rolesSoloNombres = array_map(function($r) {
+                return $r["rol"];
+            }, $rolesBD);
 
-            // Guardar todo en sesión en un solo array
             $_SESSION['usuario'] = [
                 'id'       => $usuario['id_usuario'],
                 'nombre'   => $usuario['nombres'],
                 'apellido' => $usuario['apellidos'],
                 'correo'   => $usuario['correo'],
                 'telefono' => $usuario['telefono'],
-                'roles'    => $roles
+                'roles'    => $rolesSoloNombres // <--- SOLO STRINGS
             ];
+
 
             header("Location: ../../index.php");
             exit();

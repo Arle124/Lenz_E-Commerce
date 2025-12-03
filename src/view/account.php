@@ -1,9 +1,8 @@
-<?php require_once __DIR__ . '/../../config/autoload.php'; ?>
+<?php require_once __DIR__ . "/../../config/autoload.php"; ?>
 <?php require_once __DIR__ . "/../../config/sesion.php"; ?>
-<?php require_once "../../layouts/header.php"; ?>
+<?php require_once PATH_CONFIG . 'config.php'; ?>
 
-
-<?php require_once PATH_CONFIG . 'config.php'; 
+<?php
 // Verificar sesión
 if (!isset($_SESSION['usuario'])) {
     header("Location: login_register.php?tab=login");
@@ -11,7 +10,15 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $u = $_SESSION['usuario'];
+
+require_once "../controller/PedidoController.php";
+$pedidoController = new PedidoController();
+
+// Obtener pedidos usando SP
+$pedidos = $pedidoController->misPedidos();
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,6 +31,7 @@ $u = $_SESSION['usuario'];
 
   <!-- Favicons -->
   <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>account.html">
+
   <link href="<?= BASE_URL ?>assets/img/favicon.png" rel="icon">
   <link href="<?= BASE_URL ?>assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
@@ -71,11 +79,18 @@ $u = $_SESSION['usuario'];
               <!-- User Info -->
               <div class="user-info" data-aos="fade-right">
                 <div class="user-avatar">
-                  <img src="assets/img/person/person-f-1.webp" alt="Profile" loading="lazy">
+                  <img src="<?= BASE_URL ?>assets/img/person/person-f-1.webp">
+
                   <span class="status-badge"><i class="bi bi-shield-check"></i></span>
                 </div>
                 <h4><strong>Nombre:</strong> <?= htmlspecialchars($u['nombre']) ?> <?= htmlspecialchars($u['apellido']) ?></h4>
                 <div class="user-status">
+                  <?php if (!empty($u['roles'])): ?>
+                    <span><strong>Rol:</strong> <?= htmlspecialchars(implode(", ", $u['roles'])) ?></span>
+                <?php else: ?>
+                    <span><strong>Rol:</strong> Sin roles</span>
+                <?php endif; ?>
+
                 </div>
               </div>
 
@@ -84,9 +99,9 @@ $u = $_SESSION['usuario'];
                 <ul class="nav flex-column" role="tablist">
                   <li class="nav-item">
                     <a class="nav-link active" data-bs-toggle="tab" href="#orders">
-                      <i class="bi bi-box-seam"></i>
-                      <span>My Orders</span>
-                      <span class="badge">3</span>
+                        <i class="bi bi-box-seam"></i>
+                        <span>My Orders</span>
+                        <span class="badge"><?= count($pedidos) ?></span>
                     </a>
                   </li>
                   <li class="nav-item">
@@ -148,243 +163,66 @@ $u = $_SESSION['usuario'];
                   </div>
 
                   <div class="orders-grid">
-                    <!-- Order Card 1 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">Order ID:</span>
-                          <span class="value">#ORD-2024-1278</span>
-                        </div>
-                        <div class="order-date">Feb 20, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Status</span>
-                            <span class="status processing">Processing</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Items</span>
-                            <span>3 items</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$789.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-track" data-bs-toggle="collapse" data-bs-target="#tracking1" aria-expanded="false">Track Order</button>
-                        <button type="button" class="btn-details" data-bs-toggle="collapse" data-bs-target="#details1" aria-expanded="false">View Details</button>
-                      </div>
 
-                      <!-- Order Tracking -->
-                      <div class="collapse tracking-info" id="tracking1">
-                        <div class="tracking-timeline">
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Orden realizada.</h5>
-                              <p>tu orden ha sido resibida via whats App, pronto alguien se comunicar con usted.</p>
-                              <span class="timeline-date">Feb 20, 2025 - 10:30 AM</span>
-                            </div>
-                          </div>
+                    <?php if (empty($pedidos)): ?>
 
-                          <div class="timeline-item completed">
-                            <div class="timeline-icon">
-                              <i class="bi bi-check-circle-fill"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>procesando</h5>
-                                <p>Tu orden fue recibida y está siendo procesada.</p>
-                              <span class="timeline-date">Feb 20, 2025 - 2:45 PM</span>
-                            </div>
-                          </div>
+                        <p class="text-center">No tienes pedidos aún.</p>
 
-                          <div class="timeline-item active">
-                            <div class="timeline-icon">
-                              <i class="bi bi-box-seam"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Aprobada</h5>
-                              <p>Tu orden ha sido aprobada esperando confirmación de pago</p>
-                              <span class="timeline-date">Feb 20, 2025 - 4:15 PM</span>
-                            </div>
-                          </div>
+                    <?php else: ?>
 
-                          <div class="timeline-item">
-                            <div class="timeline-icon">
-                              <i class="bi bi-truck"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Confirmada</h5>
-                              <p>tu orden ha sido confirmada</p>
-                            </div>
-                          </div>
+                        <?php foreach ($pedidos as $p): ?>
+                            <?php $items = $pedidoController->detallePedido($p['id_pedido']); ?>
 
-                          <div class="timeline-item">
-                            <div class="timeline-icon">
-                              <i class="bi bi-house-door"></i>
-                            </div>
-                            <div class="timeline-content">
-                              <h5>Terminada</h5>
-                              <p>tu orden ha sido terminada</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                            <div class="order-card" data-aos="fade-up">
 
-                      <!-- Order Details -->
-                      <div class="collapse order-details" id="details1">
-                        <div class="details-content">
-                          <div class="detail-section">
-                            <h5>Order Information</h5>
-                            <div class="info-grid">
-                              <div class="info-item">
-                                <span class="label">Payment Method</span>
-                                <span class="value">Credit Card (**** 4589)</span>
-                              </div>
-                              <div class="info-item">
-                                <span class="label">Shipping Method</span>
-                                <span class="value">Express Delivery (2-3 days)</span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="detail-section">
-                            <h5>Items (3)</h5>
-                            <div class="order-items">
-                              <div class="item">
-                                <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Lorem ipsum dolor sit amet</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-001</span>
-                                    <span class="qty">Qty: 1</span>
-                                  </div>
+                                <div class="order-header">
+                                    <div class="order-id">
+                                        <span class="label">Order ID:</span>
+                                        <span class="value">#<?= $p['id_pedido'] ?></span>
+                                    </div>
+                                    <div class="order-date"><?= $p['creado_en'] ?></div>
                                 </div>
-                                <div class="item-price">$899.99</div>
-                              </div>
 
-                              <div class="item">
-                                <img src="assets/img/product/product-2.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Consectetur adipiscing elit</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-002</span>
-                                    <span class="qty">Qty: 2</span>
-                                  </div>
+                                <div class="order-content">
+                                    <div class="product-grid">
+
+                                        <?php foreach ($items as $i): ?>
+                                            <img src="<?= BASE_URL . $i['imagen'] ?>" alt="Producto" loading="lazy">
+                                        <?php endforeach; ?>
+
+                                        <?php if (count($items) > 3): ?>
+                                            <span class="more-items">+<?= count($items) - 3 ?></span>
+                                        <?php endif; ?>
+
+                                    </div>
+
+                                    <div class="order-info">
+                                        <div class="info-row">
+                                            <span>Status</span>
+                                            <span class="status"><?= ucfirst($p['estado_nombre']) ?></span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span>Items</span>
+                                            <span><?= count($items) ?></span>
+                                        </div>
+                                        <div class="info-row">
+                                            <span>Total</span>
+                                            <span class="price">$<?= number_format($p['total'], 2) ?></span>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <div class="item-price">$599.95</div>
-                              </div>
 
-                              <div class="item">
-                                <img src="assets/img/product/product-3.webp" alt="Product" loading="lazy">
-                                <div class="item-info">
-                                  <h6>Sed do eiusmod tempor</h6>
-                                  <div class="item-meta">
-                                    <span class="sku">SKU: PRD-003</span>
-                                    <span class="qty">Qty: 1</span>
-                                  </div>
+                                <div class="order-footer">
+                                    <button type="button" class="btn-details">View Details</button>
                                 </div>
-                                <div class="item-price">$129.99</div>
-                              </div>
-                            </div>
-                          </div>
 
-                          <div class="detail-section">
-                            <h5>Price Details</h5>
-                            <div class="price-breakdown">
-                              <div class="price-row">
-                                <span>Subtotal</span>
-                                <span>$1,929.93</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Shipping</span>
-                                <span>$15.99</span>
-                              </div>
-                              <div class="price-row">
-                                <span>Tax</span>
-                                <span>$159.98</span>
-                              </div>
-                              <div class="price-row total">
-                                <span>Total</span>
-                                <span>$2,105.90</span>
-                              </div>
                             </div>
-                          </div>
 
-                          <div class="detail-section">
-                            <h5>Shipping Address</h5>
-                            <div class="address-info">
-                              <p>Sarah Anderson<br>123 Main Street<br>Apt 4B<br>New York, NY 10001<br>United States</p>
-                              <p class="contact">+1 (555) 123-4567</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- Order Card 4 -->
-                    <div class="order-card" data-aos="fade-up" data-aos-delay="400">
-                      <div class="order-header">
-                        <div class="order-id">
-                          <span class="label">Order ID:</span>
-                          <span class="value">#ORD-2024-1245</span>
-                        </div>
-                        <div class="order-date">Feb 5, 2025</div>
-                      </div>
-                      <div class="order-content">
-                        <div class="product-grid">
-                          <img src="assets/img/product/product-7.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-8.webp" alt="Product" loading="lazy">
-                          <img src="assets/img/product/product-9.webp" alt="Product" loading="lazy">
-                          <span class="more-items">+2</span>
-                        </div>
-                        <div class="order-info">
-                          <div class="info-row">
-                            <span>Status</span>
-                            <span class="status cancelled">Cancelled</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Items</span>
-                            <span>5 items</span>
-                          </div>
-                          <div class="info-row">
-                            <span>Total</span>
-                            <span class="price">$1,299.99</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="order-footer">
-                        <button type="button" class="btn-reorder">Reorder</button>
-                        <button type="button" class="btn-details">View Details</button>
-                      </div>
-                    </div>
-                  </div>
+                        <?php endforeach; ?>
 
-                  <!-- Pagination -->
-                  <div class="pagination-wrapper" data-aos="fade-up">
-                    <button type="button" class="btn-prev" disabled="">
-                      <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <div class="page-numbers">
-                      <button type="button" class="active">1</button>
-                      <button type="button">2</button>
-                      <button type="button">3</button>
-                      <span>...</span>
-                      <button type="button">12</button>
-                    </div>
-                    <button type="button" class="btn-next">
-                      <i class="bi bi-chevron-right"></i>
-                    </button>
-                  </div>
+                    <?php endif; ?>
+
                 </div>
 
                 <!-- Wishlist Tab -->
