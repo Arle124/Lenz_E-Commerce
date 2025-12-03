@@ -86,12 +86,11 @@ require_once PATH_LAYOUTS . 'header.php';
                 </div>
                 <h4><strong>Nombre:</strong> <?= htmlspecialchars($u['nombre']) ?> <?= htmlspecialchars($u['apellido']) ?></h4>
                 <div class="user-status">
-                  <?php if (!empty($u['roles'])): ?>
-                    <span><strong>Rol:</strong> <?= htmlspecialchars(implode(", ", $u['roles'])) ?></span>
-                <?php else: ?>
-                    <span><strong>Rol:</strong> Sin roles</span>
-                <?php endif; ?>
-
+                  <?php if (!empty($u['rol'])): ?>
+                    <span><strong>Rol:</strong> <?= htmlspecialchars($u['rol']) ?></span>
+                  <?php else: ?>
+                    <span><strong>Rol:</strong> Sin rol activo</span>
+                  <?php endif; ?>
                 </div>
               </div>
 
@@ -163,7 +162,6 @@ require_once PATH_LAYOUTS . 'header.php';
                     </div>
                   </div>
                   <div class="orders-grid">
-
                     <?php if (empty($pedidos)): ?>
                       <p class="text-center">No tienes pedidos aún.</p>
                     <?php else: ?>
@@ -265,6 +263,7 @@ require_once PATH_LAYOUTS . 'header.php';
                       <?php endforeach; ?>
                     <?php endif; ?>
                   </div>  
+
                   <!-- Wishlist Tab -->
                   <div class="tab-pane fade" id="wishlist">
                     <div class="section-header" data-aos="fade-up">
@@ -305,6 +304,7 @@ require_once PATH_LAYOUTS . 'header.php';
                     </div>
                   </div>
                 </div>
+
                 <!-- Settings Tab -->
                 <div class="tab-pane fade" id="settings">
                   <div class="section-header" data-aos="fade-up">
@@ -392,20 +392,22 @@ require_once PATH_LAYOUTS . 'header.php';
 
                           <div class="col-md-12">
                             <label for="currentPassword" class="form-label">Current Password</label>
-                              <input type="password" class="form-control"
-                                id="currentPassword" name="password_actual" required>
+                            <input type="password" class="form-control"
+                                  id="currentPassword" name="password_actual" required>
                           </div>
 
                           <div class="col-md-6">
                             <label for="newPassword" class="form-label">New Password</label>
-                              <input type="password" class="form-control"
-                                id="newPassword" name="password_nuevo" required>
+                            <input type="password" class="form-control"
+                                  id="newPassword" name="password_nuevo" required>
                           </div>
 
                           <div class="col-md-6">
                             <label for="confirmPassword" class="form-label">Confirm Password</label>
-                              <input type="password" class="form-control" id="delete_password" name="password_actual" required>
+                            <input type="password" class="form-control"
+                                  id="confirmPassword" name="password_confirm" required>
                           </div>
+
 
                         </div>
 

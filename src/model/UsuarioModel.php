@@ -114,12 +114,20 @@ class UsuarioModel {
         $stmt = $this->conn->prepare("CALL sp_obtener_roles_usuario(:idUsuario)");
         $stmt->execute([':idUsuario' => $idUsuario]);
 
-        $roles = $stmt->fetchAll();
+        $roles = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $stmt->closeCursor();
 
-        $stmt->closeCursor(); // limpiar SP
-
-        return $roles;
+        // Normaliza formato
+        return array_map(function($r){
+            return [
+                'id_rol' => (int)($r['id_rol'] ?? 0),
+                'rol'    => $r['rol'] ?? ''
+            ];
+        }, $roles);
     }
+
+
+
     public function actualizarPerfil($id, $nombre, $apellido, $correo, $telefono) {
 
         $sql = "CaLL sp_actualizar_usuario(:id, :nombre, :apellido, :correo, :telefono)";
