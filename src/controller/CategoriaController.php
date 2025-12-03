@@ -50,6 +50,4 @@ class CategoriaController {
         return $model->obtenerCategoriasConSubcategorias();
     }
 
-
-
 }

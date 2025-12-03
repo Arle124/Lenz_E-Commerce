@@ -51,31 +51,18 @@ class CategoriaModel {
         return $stmt->execute();
     }
 
-    // dentro de CategoriaModel class
-
-    /**
-     * Devuelve un array de categorías con sus subcategorías:
-     * [
-     *   ['id'=>1, 'nombre'=>'Clothing', 'subcategorias'=> [ ['id'=>10,'nombre'=>'Men'], ... ] ],
-     *   ...
-     * ]
-     */
     public function obtenerCategoriasConSubcategorias() {
-        $sql = "
-            SELECT 
-                c.id_categoria AS categoria_id,
-                c.nombre AS categoria,
-                s.id_subcategoria AS sub_id,
-                s.nombre AS sub_nombre
-            FROM categorias c
-            LEFT JOIN subcategorias s ON s.id_categoria = c.id_categoria
-            ORDER BY c.nombre, s.nombre
-        ";
-
+        $sql = "CALL sp_listar_categorias_subcategorias()";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
+
+        // Primer result set (el importante)
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        // 👇 IMPORTANTE: limpiar buffers si el SP devuelve más result sets
+        while ($stmt->nextRowset()) {;}
+
+        // Procesar categorías y subcategorías
         $categorias = [];
 
         foreach ($rows as $row) {
@@ -97,9 +84,9 @@ class CategoriaModel {
             }
         }
 
-        // devolver como array indexado, no como mapa por id
         return array_values($categorias);
     }
+
 
 
 }

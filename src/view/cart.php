@@ -1,351 +1,200 @@
-<?php require_once __DIR__ . '/../../config/autoload.php'; ?>
-<?php require_once PATH_CONFIG . "config.php"; ?>
+<?php
+session_start();
+require_once __DIR__ . '/../../config/autoload.php';
+require_once PATH_CONFIG . "config.php";
+require_once __DIR__ . '/../controller/ProductoController.php';
+
+$productoController = new ProductoController();
+
+// 1️⃣ Agregar producto al carrito
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_producto'], $_POST['cantidad'])) {
+    $id = (int)$_POST['id_producto'];
+    $cantidad = (int)$_POST['cantidad'];
+    $producto = $productoController->verProducto($id);
+
+    if ($producto) {
+        if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+
+        if (isset($_SESSION['cart'][$id])) {
+            $_SESSION['cart'][$id]['cantidad'] = min($_SESSION['cart'][$id]['cantidad'] + $cantidad, $producto['stock']);
+        } else {
+            $_SESSION['cart'][$id] = [
+                'nombre' => $producto['nombre'],
+                'precio' => $producto['precio'],
+                'cantidad' => min($cantidad, $producto['stock']),
+                'imagen' => !empty($producto['imagenes']) ? $producto['imagenes'][0] : 'assets/img/default.jpg',
+                'stock' => $producto['stock']
+            ];
+        }
+
+        header("Location: cart.php");
+        exit;
+    }
+}
+
+// 2️⃣ Eliminar producto
+if (isset($_GET['remove'])) {
+    $removeId = (int)$_GET['remove'];
+    if (isset($_SESSION['cart'][$removeId])) unset($_SESSION['cart'][$removeId]);
+    header("Location: cart.php");
+    exit;
+}
+
+// 3️⃣ Actualizar cantidad
+if (isset($_GET['update'], $_GET['cantidad'])) {
+    $updateId = (int)$_GET['update'];
+    $cantidad = (int)$_GET['cantidad'];
+    if (isset($_SESSION['cart'][$updateId])) {
+        $_SESSION['cart'][$updateId]['cantidad'] = min($cantidad, $_SESSION['cart'][$updateId]['stock']);
+    }
+    header("Location: cart.php");
+    exit;
+}
+
+// 4️⃣ Vaciar carrito
+if (isset($_GET['clear'])) {
+    unset($_SESSION['cart']);
+    header("Location: cart.php");
+    exit;
+}
+
+// 5️⃣ Calcular subtotal y total
+$subtotal = 0;
+if (!empty($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        $subtotal += $item['precio'] * $item['cantidad'];
+    }
+}
+$shipping = 5000; // Costo de envío fijo
+$total = $subtotal + $shipping;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Cart - eStore Bootstrap Template</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-
-  <!-- Favicons -->
-  <link href="<?=BASE_URL?>assets/img/favicon.png" rel="icon">
-  <link href="<?=BASE_URL?>assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito - Lenz</title>
   <link href="<?=BASE_URL?>assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="<?=BASE_URL?>assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="<?=BASE_URL?>assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-  <link href="<?=BASE_URL?>assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="<?=BASE_URL?>assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="<?=BASE_URL?>assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
   <link href="<?=BASE_URL?>assets/css/main.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: eStore
-  * Template URL: https://bootstrapmade.com/estore-bootstrap-ecommerce-template/
-  * Updated: Apr 26 2025 with Bootstrap v5.3.5
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
-
 <body class="cart-page">
 
-  <!-- Header -->
-  <?php include_once PATH_LAYOUTS . 'header.php'; ?>
-  <!-- End Header -->
+<?php include_once PATH_LAYOUTS . 'header.php'; ?>
 
-  <main class="main">
+<main class="main">
+  <div class="page-title light-background">
+    <div class="container d-lg-flex justify-content-between align-items-center">
+      <h1 class="mb-2 mb-lg-0">Carrito</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="<?=BASE_URL?>index.php">Inicio</a></li>
+          <li class="current">Carrito</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
 
-    <!-- Page Title -->
-    <div class="page-title light-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Cart</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Cart</li>
-          </ol>
-        </nav>
-      </div>
-    </div><!-- End Page Title -->
-
-    <!-- Cart Section -->
-    <section id="cart" class="cart section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row g-4">
-          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-            <div class="cart-items">
-              <div class="cart-header d-none d-lg-block">
-                <div class="row align-items-center gy-4">
-                  <div class="col-lg-6">
-                    <h5>Product</h5>
-                  </div>
-                  <div class="col-lg-2 text-center">
-                    <h5>Price</h5>
-                  </div>
-                  <div class="col-lg-2 text-center">
-                    <h5>Quantity</h5>
-                  </div>
-                  <div class="col-lg-2 text-center">
-                    <h5>Total</h5>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Cart Item 1 -->
-              <div class="cart-item" data-aos="fade-up" data-aos-delay="100">
-                <div class="row align-items-center gy-4">
-                  <div class="col-lg-6 col-12 mb-3 mb-lg-0">
-                    <div class="product-info d-flex align-items-center">
-                      <div class="product-image">
-                        <img src="assets/img/product/product-2.webp" alt="Product" class="img-fluid" loading="lazy">
-                      </div>
-                      <div class="product-details">
-                        <h6 class="product-title">Lorem ipsum dolor sit amet</h6>
-                        <div class="product-meta">
-                          <span class="product-color">Color: Black</span>
-                          <span class="product-size">Size: M</span>
-                        </div>
-                        <button class="remove-item" type="button">
-                          <i class="bi bi-trash"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center">
-                    <div class="price-tag">
-                      <span class="current-price">$89.99</span>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" value="1" min="1" max="10">
-                      <button class="quantity-btn increase">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center mt-3 mt-lg-0">
-                    <div class="item-total">
-                      <span>$89.99</span>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Cart Item -->
-
-              <!-- Cart Item 2 -->
-              <div class="cart-item" data-aos="fade-up" data-aos-delay="200">
-                <div class="row align-items-center gy-4">
-                  <div class="col-lg-6 col-12 mb-3 mb-lg-0">
-                    <div class="product-info d-flex align-items-center">
-                      <div class="product-image">
-                        <img src="assets/img/product/product-7.webp" alt="Product" class="img-fluid" loading="lazy">
-                      </div>
-                      <div class="product-details">
-                        <h6 class="product-title">Consectetur adipiscing elit</h6>
-                        <div class="product-meta">
-                          <span class="product-color">Color: White</span>
-                          <span class="product-size">Size: L</span>
-                        </div>
-                        <button class="remove-item" type="button">
-                          <i class="bi bi-trash"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center">
-                    <div class="price-tag">
-                      <span class="current-price">$64.99</span>
-                      <span class="original-price">$79.99</span>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" value="2" min="1" max="10">
-                      <button class="quantity-btn increase">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center mt-3 mt-lg-0">
-                    <div class="item-total">
-                      <span>$129.98</span>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Cart Item -->
-
-              <!-- Cart Item 3 -->
-              <div class="cart-item" data-aos="fade-up" data-aos-delay="300">
-                <div class="row align-items-center gy-4">
-                  <div class="col-lg-6 col-12 mb-3 mb-lg-0">
-                    <div class="product-info d-flex align-items-center">
-                      <div class="product-image">
-                        <img src="assets/img/product/product-10.webp" alt="Product" class="img-fluid" loading="lazy">
-                      </div>
-                      <div class="product-details">
-                        <h6 class="product-title">Sed do eiusmod tempor</h6>
-                        <div class="product-meta">
-                          <span class="product-color">Color: Blue</span>
-                          <span class="product-size">Size: S</span>
-                        </div>
-                        <button class="remove-item" type="button">
-                          <i class="bi bi-trash"></i> Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center">
-                    <div class="price-tag">
-                      <span class="current-price">$49.99</span>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center">
-                    <div class="quantity-selector">
-                      <button class="quantity-btn decrease">
-                        <i class="bi bi-dash"></i>
-                      </button>
-                      <input type="number" class="quantity-input" value="1" min="1" max="10">
-                      <button class="quantity-btn increase">
-                        <i class="bi bi-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-2 text-center mt-3 mt-lg-0">
-                    <div class="item-total">
-                      <span>$49.99</span>
-                    </div>
-                  </div>
-                </div>
-              </div><!-- End Cart Item -->
-
-              <div class="cart-actions">
-                <div class="row g-3">
-                  <div class="col-lg-6 col-md-6">
-                    <div class="coupon-form">
-                      <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Coupon code">
-                        <button class="btn btn-accent" type="button">Apply</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 col-md-6 text-md-end">
-                    <button class="btn btn-outline-accent me-2">
-                      <i class="bi bi-arrow-clockwise"></i> Update
-                    </button>
-                    <button class="btn btn-outline-danger">
-                      <i class="bi bi-trash"></i> Clear
-                    </button>
-                  </div>
-                </div>
+  <section id="cart" class="cart section">
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row g-4">
+        <!-- Carrito Items -->
+        <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+          <div class="cart-items">
+            <div class="cart-header d-none d-lg-block">
+              <div class="row align-items-center gy-4">
+                <div class="col-lg-6"><h5>Producto</h5></div>
+                <div class="col-lg-2 text-center"><h5>Precio</h5></div>
+                <div class="col-lg-2 text-center"><h5>Cantidad</h5></div>
+                <div class="col-lg-2 text-center"><h5>Total</h5></div>
               </div>
             </div>
-          </div>
 
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="cart-summary">
-              <h4 class="summary-title">Order Summary</h4>
-
-              <div class="summary-item">
-                <span class="summary-label">Subtotal</span>
-                <span class="summary-value">$269.96</span>
-              </div>
-
-              <div class="summary-item shipping-item">
-                <span class="summary-label">Shipping</span>
-                <div class="shipping-options">
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="shipping" id="standard" checked="">
-                    <label class="form-check-label" for="standard">
-                      Standard Delivery - $4.99
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="shipping" id="express">
-                    <label class="form-check-label" for="express">
-                      Express Delivery - $12.99
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="shipping" id="free">
-                    <label class="form-check-label" for="free">
-                      Free Shipping (Orders over $300)
-                    </label>
+            <?php if(!empty($_SESSION['cart'])): ?>
+              <?php foreach($_SESSION['cart'] as $id => $item): ?>
+                <div class="cart-item" data-aos="fade-up">
+                  <div class="row align-items-center gy-4">
+                    <div class="col-lg-6 col-12 mb-3 mb-lg-0">
+                      <div class="product-info d-flex align-items-center">
+                        <div class="product-image">
+                          <img src="<?= BASE_URL . $item['imagen'] ?>" alt="<?= htmlspecialchars($item['nombre']) ?>" class="img-fluid">
+                        </div>
+                        <div class="product-details">
+                          <h6 class="product-title"><?= htmlspecialchars($item['nombre']) ?></h6>
+                          <button class="remove-item btn btn-sm btn-outline-danger mt-2" 
+                                  onclick="window.location='cart.php?remove=<?= $id ?>'">
+                            <i class="bi bi-trash"></i> Eliminar
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-2 text-center">
+                      <div class="price-tag">$<?= number_format($item['precio'],2) ?></div>
+                    </div>
+                    <div class="col-12 col-lg-2 text-center">
+                      <div class="quantity-selector d-flex justify-content-center align-items-center">
+                        <button class="quantity-btn decrease btn btn-outline-secondary btn-sm"
+                                onclick="window.location='cart.php?update=<?= $id ?>&cantidad=<?= max(1,$item['cantidad']-1) ?>'">
+                          <i class="bi bi-dash"></i>
+                        </button>
+                        <input type="number" class="quantity-input text-center mx-1" style="width:50px;"
+                               value="<?= $item['cantidad'] ?>" min="1" max="<?= $item['stock'] ?>"
+                               onchange="window.location='cart.php?update=<?= $id ?>&cantidad='+this.value;">
+                        <button class="quantity-btn increase btn btn-outline-secondary btn-sm"
+                                onclick="window.location='cart.php?update=<?= $id ?>&cantidad=<?= min($item['stock'],$item['cantidad']+1) ?>'">
+                          <i class="bi bi-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-2 text-center mt-3 mt-lg-0">
+                      <div class="item-total">$<?= number_format($item['precio'] * $item['cantidad'],2) ?></div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <?php endforeach; ?>
 
-              <div class="summary-item">
-                <span class="summary-label">Tax</span>
-                <span class="summary-value">$27.00</span>
+              <div class="cart-actions mt-4 d-flex justify-content-between">
+                <a href="cart.php?clear=1" class="btn btn-outline-danger">Vaciar Carrito</a>
               </div>
-
-              <div class="summary-item discount">
-                <span class="summary-label">Discount</span>
-                <span class="summary-value">-$0.00</span>
-              </div>
-
-              <div class="summary-total">
-                <span class="summary-label">Total</span>
-                <span class="summary-value">$301.95</span>
-              </div>
-
-              <div class="checkout-button">
-                <a href="<?=BASE_URL?>src/carrito/view/checkout.php" class="btn btn-accent w-100">
-                  Proceed to Checkout <i class="bi bi-arrow-right"></i>
-                </a>
-              </div>
-
-              <div class="continue-shopping">
-                <a href="<?=BASE_URL?>src/tienda/view/category.php" class="btn btn-link w-100">
-                  <i class="bi bi-arrow-left"></i> Continue Shopping
-                </a>
-              </div>
-
-              <div class="payment-methods">
-                <p class="payment-title">We Accept</p>
-                <div class="payment-icons">
-                  <i class="bi bi-credit-card-2-front"></i>
-                  <i class="bi bi-paypal"></i>
-                  <i class="bi bi-wallet2"></i>
-                  <i class="bi bi-apple"></i>
-                  <i class="bi bi-google"></i>
-                </div>
-              </div>
-            </div>
+            <?php else: ?>
+              <p>Tu carrito está vacío. <a href="<?= BASE_URL ?>src/view/category.php">Continuar comprando</a></p>
+            <?php endif; ?>
           </div>
         </div>
 
+        <!-- Resumen -->
+        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="cart-summary">
+            <h4 class="summary-title">Resumen del Pedido</h4>
+            <div class="summary-item"><span class="summary-label">Subtotal</span><span class="summary-value">$<?= number_format($subtotal,2) ?></span></div>
+            <div class="summary-item shipping-item"><span class="summary-label">Envío</span><span class="summary-value">$<?= number_format($shipping,2) ?></span></div>
+            <div class="summary-total"><span class="summary-label">Total</span><span class="summary-value">$<?= number_format($total,2) ?></span></div>
+            <div class="checkout-button mt-3">
+              <a href="<?=BASE_URL?>src/view/checkout.php" class="btn btn-accent w-100">
+                Proceder al Pedido <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+            <div class="continue-shopping"> <a href="<?=BASE_URL?>src/view/category.php" class="btn btn-link w-100"> <i class="bi     bi-arrow-left"></i> Continuar Comprando </a> </div>
+            </div>
+        </div>
+
       </div>
+    </div>
+  </section>
+</main>
 
-    </section><!-- /Cart Section -->
+<?php include_once PATH_LAYOUTS . 'footer.php'; ?>
 
-  </main>
+<div id="preloader"></div>
 
-  <!-- ======= Footer ======= -->
-  <?php include_once PATH_LAYOUTS . 'footer.php'; ?>
-  <!-- End Footer -->
+<script src="<?=BASE_URL?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?=BASE_URL?>assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="<?=BASE_URL?>assets/vendor/aos/aos.js"></script>
+<script src="<?=BASE_URL?>assets/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="<?=BASE_URL?>assets/vendor/drift-zoom/Drift.min.js"></script>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="<?=BASE_URL?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/php-email-form/validate.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/aos/aos.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/drift-zoom/Drift.min.js"></script>
-  <script src="<?=BASE_URL?>assets/vendor/purecounter/purecounter_vanilla.js"></script>
-
-  <!-- Main JS File -->
-  <script src="<?=BASE_URL?>assets/js/main.js"></script>
+<script src="<?=BASE_URL?>assets/js/main.js"></script>
 
 </body>
-
 </html>

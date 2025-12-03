@@ -13,90 +13,75 @@ class ProductoModel {
      * Obtiene productos filtrados por categoría, subcategoría, precio y orden
      */
     public function filtrar($cat = null, $subcat = null, $order = null, $price = null) {
-        // Base SQL
-        $sql = "SELECT p.*, 
-                    c.id_categoria AS categoria_id, 
-                    s.id_subcategoria AS subcategoria_id
-                FROM productos p
-                JOIN subcategorias s ON p.id_subcategoria = s.id_subcategoria
-                JOIN categorias c ON s.id_categoria = c.id_categoria
-                WHERE 1=1";
+        // Convertir NULLs correctamente (PDO necesita pasar NULL explícito)
+        $cat = $cat ?: null;
+        $subcat = $subcat ?: null;
+        $order = $order ?: null;
+        $price = $price ?: null;
 
-        $params = [];
-
-        // Filtros
-        if ($cat) {
-            $sql .= " AND c.id_categoria = :cat";
-            $params[':cat'] = $cat;
-        }
-        if ($subcat) {
-            $sql .= " AND s.id_subcategoria = :subcat";
-            $params[':subcat'] = $subcat;
-        }
-        if ($price) {
-            list($min, $max) = explode('-', $price);
-            $sql .= " AND p.precio BETWEEN :min AND :max";
-            $params[':min'] = $min;
-            $params[':max'] = $max;
-        }
-
-        // Orden
-        switch ($order) {
-            case 'price_asc':
-                $sql .= " ORDER BY p.precio ASC";
-                break;
-            case 'price_desc':
-                $sql .= " ORDER BY p.precio DESC";
-                break;
-            case 'newest':
-                $sql .= " ORDER BY p.id_producto DESC";
-                break;
-            default:
-                $sql .= " ORDER BY p.id_producto ASC";
-                break;
-        }
-
+        $sql = "CALL sp_filtrar_productos(:cat, :subcat, :price, :orden)";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($params);
+        
+        $stmt->bindValue(':cat', $cat, is_null($cat) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':subcat', $subcat, is_null($subcat) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':price', $price, is_null($price) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+        $stmt->bindValue(':orden', $order, is_null($order) ? PDO::PARAM_NULL : PDO::PARAM_STR);
+
+        $stmt->execute();
+
         $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Traer imágenes de todos los productos filtrados
-        if (!empty($productos)) {
-            $ids = array_column($productos, 'id_producto');
-            $placeholders = implode(',', array_fill(0, count($ids), '?'));
-            $imgStmt = $this->pdo->prepare("SELECT id_producto, ruta FROM imagenes_productos WHERE id_producto IN ($placeholders)");
-            $imgStmt->execute($ids);
-            $imagenes = $imgStmt->fetchAll(PDO::FETCH_ASSOC);
-
-            // Organizar imágenes por producto
-            $imgsPorProducto = [];
-            foreach ($imagenes as $img) {
-                $imgsPorProducto[$img['id_producto']][] = $img['ruta'];
-            }
-
-            // Asociar la primera imagen a cada producto
-            foreach ($productos as &$prod) {
-                $prod['imagen'] = $imgsPorProducto[$prod['id_producto']][0] ?? 'assets/img/default.jpg';
-            }
-        }
+        // Limpiar más result-sets (muy importante)
+        while ($stmt->nextRowset()) {;}
 
         return $productos;
     }
 
 
-    public function agregarProducto($nombre, $descripcion, $precio, $id_subcategoria, $creado_por) {
-        $sql = "INSERT INTO producto (nombre, descripcion, precio, id_subcategoria, creado_por, creado_en, actualizado_en)
-                VALUES (:nombre, :descripcion, :precio, :id_subcategoria, :creado_por, NOW(), NOW())";
+
+    public function agregarProducto($nombre, $descripcion, $precio, $id_subcategoria, $creado_por) 
+    {
+        $sql = "CALL sp_agregar_producto(:nombre, :descripcion, :precio, :subcat, :creado_por)";
+        
         $stmt = $this->pdo->prepare($sql);
+
         $stmt->bindParam(':nombre', $nombre);
         $stmt->bindParam(':descripcion', $descripcion);
         $stmt->bindParam(':precio', $precio);
-        $stmt->bindParam(':id_subcategoria', $id_subcategoria);
-        $stmt->bindParam(':creado_por', $creado_por);
+        $stmt->bindParam(':subcat', $id_subcategoria, PDO::PARAM_INT);
+        $stmt->bindParam(':creado_por', $creado_por, PDO::PARAM_INT);
+
         $stmt->execute();
 
-        return $this->pdo->lastInsertId(); // devuelve el id del producto insertado
+        // Obtener el ID retornado por el SP
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Limpiar múltiples result sets (MUY IMPORTANTE con CALL)
+        while ($stmt->nextRowset()) {}
+
+        return $result['id_producto'] ?? null;
     }
+
+
+    public function getProductoPorId($idProducto) {
+
+        $stmt = $this->pdo->prepare("CALL sp_getProductoPorId(:id)");
+        $stmt->execute([':id' => $idProducto]);
+        $producto = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // IMPORTANTE: limpiar el buffer de resultados adicionales de los SP
+        $stmt->closeCursor();  
+
+        if (!$producto) return null;
+
+        // Convertir imágenes a un array
+        $producto['imagenes'] = $producto['imagenes']
+            ? explode(',', $producto['imagenes'])
+            : [];
+
+        return $producto;
+    }
+
 
 
 }
