@@ -44,4 +44,12 @@ class CategoriaController {
         header("Location: index.php?c=categoria&a=index"); // Esto queda pendiente para editar la vista
         exit;
     }
+
+    public function listarConSubcategorias() {
+        $model = new CategoriaModel();
+        return $model->obtenerCategoriasConSubcategorias();
+    }
+
+
+
 }

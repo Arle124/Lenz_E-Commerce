@@ -31,13 +31,6 @@
   <!-- Main CSS File -->
   <link href="<?= BASE_URL ?>assets/css/main.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: eStore
-  * Template URL: https://bootstrapmade.com/estore-bootstrap-ecommerce-template/
-  * Updated: Apr 26 2025 with Bootstrap v5.3.5
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body class="product-details-page">
