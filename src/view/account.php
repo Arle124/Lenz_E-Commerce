@@ -1,8 +1,8 @@
-<?php require_once __DIR__ . "/../../config/autoload.php"; ?>
-<?php require_once __DIR__ . "/../../config/sesion.php"; ?>
-<?php require_once PATH_CONFIG . 'config.php'; ?>
-<?php require_once PATH_LAYOUTS . 'header.php'; ?>
-<?php
+<?php 
+require_once __DIR__ . "/../../config/autoload.php"; 
+require_once __DIR__ . "/../../config/sesion.php"; 
+require_once PATH_CONFIG . 'config.php'; 
+
 // Verificar sesión
 if (!isset($_SESSION['usuario'])) {
     header("Location: login_register.php?tab=login");
@@ -10,12 +10,12 @@ if (!isset($_SESSION['usuario'])) {
 }
 
 $u = $_SESSION['usuario'];
-
 require_once "../controller/PedidoController.php";
 $pedidoController = new PedidoController();
 
 // Obtener pedidos usando SP
 $pedidos = $pedidoController->misPedidos();
+require_once PATH_LAYOUTS . 'header.php'; 
 ?>
 
 
@@ -124,7 +124,7 @@ $pedidos = $pedidoController->misPedidos();
                     <i class="bi bi-question-circle"></i>
                     <span>Help Center</span>
                   </a>
-                  <a href="#" class="logout-link">
+                  <a href="<?= BASE_URL ?>src/controller/UsuarioController.php?action=logout" class="logout-link">
                     <i class="bi bi-box-arrow-right"></i>
                     <span>Log Out</span>
                   </a>
@@ -330,7 +330,8 @@ $pedidos = $pedidoController->misPedidos();
                         <button type="button" class="btn-add-cart">Add to Cart</button>
                       </div>
                     </div>
-
+                  </div>
+                </div>
                 <!-- Settings Tab -->
                 <div class="tab-pane fade" id="settings">
                   <div class="section-header" data-aos="fade-up">
@@ -338,92 +339,101 @@ $pedidos = $pedidoController->misPedidos();
                   </div>
 
                   <div class="settings-content">
+
                     <!-- Personal Information -->
                     <div class="settings-section" data-aos="fade-up">
-                      <h3>Personal Information</h3>
-                      <form class="php-email-form settings-form">
-                        <div class="row g-3">
-                          <div class="col-md-6">
-                            <label for="firstName" class="form-label">First Name</label>
-                            <input type="text" class="form-control" id="firstName" value="Sarah" required="">
-                          </div>
-                          <div class="col-md-6">
-                            <label for="lastName" class="form-label">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" value="Anderson" required="">
-                          </div>
-                          <div class="col-md-6">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" value="sarah@example.com" required="">
-                          </div>
-                          <div class="col-md-6">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
-                          </div>
-                        </div>
+                        <h3>Personal Information</h3>
 
-                        <div class="form-buttons">
-                          <button type="submit" class="btn-save">Save Changes</button>
-                        </div>
+                        <?php if (!empty($_SESSION['success'])): ?>
+                            <div class="alert alert-success">
+                                <?= $_SESSION['success'] ?>
+                            </div>
+                            <?php unset($_SESSION['success']); ?>
+                        <?php endif; ?>
 
-                        <div class="loading">Loading</div>
-                        <div class="error-message"></div>
-                        <div class="sent-message">Your changes have been saved successfully!</div>
-                      </form>
+                        <?php if (!empty($_SESSION['error'])): ?>
+                            <div class="alert alert-danger">
+                                <?= $_SESSION['error'] ?>
+                            </div>
+                            <?php unset($_SESSION['error']); ?>
+                        <?php endif; ?>
+
+                        <!-- FORMULARIO CORREGIDO -->
+                        <form class="php-email-form settings-form"
+                              action="<?= BASE_URL ?>src/controller/UsuarioController.php"
+                              method="POST">
+
+                            <input type="hidden" name="action" value="actualizar_perfil">
+
+                            <div class="row g-3">
+
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control"
+                                          id="firstName" name="nombre"
+                                          value="<?= htmlspecialchars($u['nombre']) ?>" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control"
+                                          id="lastName" name="apellido"
+                                          value="<?= htmlspecialchars($u['apellido']) ?>" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="correo" class="form-label">Correo</label>
+                                    <input type="email" class="form-control"
+                                          id="correo" name="correo"
+                                          value="<?= htmlspecialchars($u['correo']) ?>" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control"
+                                          id="phone" name="telefono"
+                                          value="<?= htmlspecialchars($u['telefono']) ?>">
+                                </div>
+
+                            </div>
+
+                            <div class="form-buttons mt-3">
+                                <button type="submit" class="btn-save">Save Changes</button>
+                            </div>
+                        </form>
                     </div>
 
-                    <!-- Email Preferences -->
-                    <div class="settings-section" data-aos="fade-up" data-aos-delay="100">
-                      <h3>Email Preferences</h3>
-                      <div class="preferences-list">
-                        <div class="preference-item">
-                          <div class="preference-info">
-                            <h4>Order Updates</h4>
-                            <p>Receive notifications about your order status</p>
-                          </div>
-                          <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="orderUpdates" checked="">
-                          </div>
-                        </div>
-
-                        <div class="preference-item">
-                          <div class="preference-info">
-                            <h4>Promotions</h4>
-                            <p>Receive emails about new promotions and deals</p>
-                          </div>
-                          <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="promotions">
-                          </div>
-                        </div>
-
-                        <div class="preference-item">
-                          <div class="preference-info">
-                            <h4>Newsletter</h4>
-                            <p>Subscribe to our weekly newsletter</p>
-                          </div>
-                          <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="newsletter" checked="">
-                          </div>
-                        </div>
-                      </div>
-                    </div>
 
                     <!-- Security Settings -->
                     <div class="settings-section" data-aos="fade-up" data-aos-delay="200">
                       <h3>Security</h3>
-                      <form class="php-email-form settings-form">
+
+                      <form class="php-email-form settings-form"
+                        action="<?= BASE_URL ?>src/controller/UsuarioController.php"
+                        method="POST">
+
+                        <input type="hidden" name="action" value="actualizar_password">
+
                         <div class="row g-3">
+
                           <div class="col-md-12">
                             <label for="currentPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="currentPassword" required="">
+                              <input type="password" class="form-control"
+                                id="currentPassword" name="password_actual" required>
                           </div>
+
                           <div class="col-md-6">
                             <label for="newPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="newPassword" required="">
+                              <input type="password" class="form-control"
+                                id="newPassword" name="password_nuevo" required>
                           </div>
+
                           <div class="col-md-6">
                             <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" required="">
+                              <input type="password" class="form-control"
+                                id="confirmPassword" name="password_confirm" required>
                           </div>
+
                         </div>
 
                         <div class="form-buttons">
@@ -435,6 +445,7 @@ $pedidos = $pedidoController->misPedidos();
                         <div class="sent-message">Your password has been updated successfully!</div>
                       </form>
                     </div>
+           
 
                     <!-- Delete Account -->
                     <div class="settings-section danger-zone" data-aos="fade-up" data-aos-delay="300">
@@ -450,7 +461,6 @@ $pedidos = $pedidoController->misPedidos();
             </div>
           </div>
         </div>
-
       </div>
 
     </section><!-- /Account Section -->

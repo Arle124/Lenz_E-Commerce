@@ -188,10 +188,52 @@ class UsuarioController {
             exit();
         }
     }
-}
+    
+    // =====================================================
+    // ACTUALIZAR PERFIL (nombre, apellido, correo, telefono)
+    // =====================================================
+    public function actualizar_perfil() {
 
-    // Ejecutar acción recibida por GET
-    $controller = new UsuarioController();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $id = $_SESSION['usuario']['id'];
+            $nombre = trim($_POST['nombre']);
+            $apellido = trim($_POST['apellido']);
+            $correo = trim($_POST['correo']);
+            $telefono = trim($_POST['telefono']);
+
+            // Validaciones básicas
+            if (empty($nombre) || empty($apellido) || empty($correo)) {
+                $_SESSION['error'] = "Nombre, apellido y correo son obligatorios.";
+                header("Location: ../view/account.php#settings");
+                exit();
+            }
+
+            // Actualizar en la BD
+            $ok = $this->model->actualizarPerfil($id, $nombre, $apellido, $correo, $telefono);
+
+            if ($ok) {
+                // Actualizar en sesión para que se vea inmediatamente
+                $_SESSION['usuario']['nombre']   = $nombre;
+                $_SESSION['usuario']['apellido'] = $apellido;
+                $_SESSION['usuario']['correo']   = $correo;
+                $_SESSION['usuario']['telefono'] = $telefono;
+
+                $_SESSION['success'] = "Datos actualizados correctamente.";
+            } else {
+                $_SESSION['error'] = "No se pudo actualizar el perfil.";
+            }
+
+            header("Location: ../view/account.php#settings");
+            exit();
+        }
+    }
+
+
+    
+}
+// Ejecutar acción recibida por GET
+$controller = new UsuarioController();
     $action = $_POST['action'] ?? $_GET['action'] ?? '';
     if ($action) {
         switch ($action) {
@@ -202,10 +244,12 @@ class UsuarioController {
             case 'obtener': $controller->obtenerUsuario(); break;
             case 'estado': $controller->cambiarEstado(); break;
             case 'rol': $controller->asignarRol(); break;
+            case 'actualizar_perfil': $controller->actualizarPerfil(); break;
             default:
                 $_SESSION['error'] = "Acción no válida.";
                 header("Location: ../view/login_register.php");
                 exit();
         }
     }
+    
 ?>

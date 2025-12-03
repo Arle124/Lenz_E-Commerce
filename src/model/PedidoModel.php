@@ -11,12 +11,12 @@ class PedidoModel {
 
     // Obtener pedidos del usuario
     public function misPedidos($idUsuario) {
-        $sql = "SELECT p.*, ep.nombre AS estado_nombre
-                FROM pedidos p
-                JOIN estados_pedido ep ON ep.id_estado = p.id_estado
-                WHERE p.id_cliente = :id
-                ORDER BY p.creado_en DESC";
-
+        // $sql = "SELECT p.*, ep.nombre AS estado_nombre
+        //         FROM pedidos p
+        //         JOIN estados_pedido ep ON ep.id_estado = p.id_estado
+        //         WHERE p.id_cliente = :id
+        //         ORDER BY p.creado_en DESC";
+        $sql = "CALL sp_obtener_pedidos_usuario(:id)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':id' => $idUsuario]);
 
@@ -25,13 +25,13 @@ class PedidoModel {
 
     // Obtener productos dentro de un pedido
     public function detallePedido($idPedido) {
-        $sql = "SELECT pd.*, pr.nombre, pr.precio,
-               (SELECT ruta FROM imagenes_productos 
-                WHERE id_producto = pr.id_producto LIMIT 1) AS imagen
-               FROM pedidos_detalles pd
-               JOIN productos pr ON pr.id_producto = pd.id_producto
-               WHERE pd.id_pedido = :id";
-
+        // $sql = "SELECT pd.*, pr.nombre, pr.precio,
+        //        (SELECT ruta FROM imagenes_productos 
+        //         WHERE id_producto = pr.id_producto LIMIT 1) AS imagen
+        //        FROM pedidos_detalles pd
+        //        JOIN productos pr ON pr.id_producto = pd.id_producto
+        //        WHERE pd.id_pedido = :id";
+        $sql = "CALL sp_obtener_productos_pedido(:idPedido)";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([':id' => $idPedido]);
 
@@ -100,6 +100,25 @@ class PedidoModel {
         $stmt->execute([":id" => $idPedido]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function actualizarPerfil($id, $nombre, $apellido, $email, $telefono)
+    {
+        $sql = "UPDATE usuarios 
+                SET nombres = :nombre,
+                    apellidos = :apellido,
+                    email = :email,
+                    telefono = :telefono
+                WHERE id_usuario = :id";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ":nombre" => $nombre,
+            ":apellido" => $apellido,
+            ":email" => $email,
+            ":telefono" => $telefono,
+            ":id" => $id
+        ]);
     }
 
 

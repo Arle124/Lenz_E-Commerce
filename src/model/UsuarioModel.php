@@ -47,7 +47,7 @@ class UsuarioModel {
         $usuario = $stmt->fetch();
 
         $stmt->closeCursor(); // limpiar SP
-
+        
         return $usuario;
     }
 
@@ -120,5 +120,21 @@ class UsuarioModel {
 
         return $roles;
     }
+    public function actualizarPerfil($id, $nombre, $apellido, $correo, $telefono) {
+
+        $sql = "CaLL sp_actualizar_usuario(:id, :nombre, :apellido, :correo, :telefono)";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ":id" => $id,
+            ":nombre" => $nombre,
+            ":apellido" => $apellido,
+            ":correo" => $correo,
+            ":telefono" => $telefono
+        ]);
+    }
+
+
 }
 ?>
