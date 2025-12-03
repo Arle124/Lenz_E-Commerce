@@ -54,7 +54,7 @@
         <h1 class="mb-2 mb-lg-0">Sobre</h1>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.php">Inicio</a></li>
+            <li><a href="<?= BASE_URL ?>index.php">Inicio</a></li>
             <li class="current">Sobre</li>
           </ol>
         </nav>
