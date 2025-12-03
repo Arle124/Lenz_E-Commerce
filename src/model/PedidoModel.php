@@ -62,16 +62,46 @@ class PedidoModel {
     }
     public function obtenerPedidosPorUsuario($idCliente) {
 
-    $sql = "CALL sp_obtener_pedidos_usuario(:idCliente)";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute([':idCliente' => $idCliente]);
+        $sql = "CALL sp_obtener_pedidos_usuario(:idCliente)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':idCliente' => $idCliente]);
 
-    $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $stmt->closeCursor(); // SUPER IMPORTANTE PARA NO BLOQUEAR + SPs
+        $stmt->closeCursor(); // SUPER IMPORTANTE PARA NO BLOQUEAR + SPs
 
-    return $resultado;
-}
+        return $resultado;
+    }
+    public function agregarTracking($idPedido, $idEstado, $descripcion, $idUsuario) {
+
+        $sql = "CALL sp_registrar_tracking(:pedido, :estado, :descripcion, :usuario)";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ":pedido" => $idPedido,
+            ":estado" => $idEstado,
+            ":descripcion" => $descripcion,
+            ":usuario" => $idUsuario
+        ]);
+
+        $stmt->closeCursor();
+    }
+
+    public function obtenerTracking($idPedido) {
+
+        $sql = "SELECT t.*, e.nombre AS estado_nombre, u.nombres AS usuario
+                FROM ad_trk_pedidos t
+                JOIN estados_pedido e ON e.id_estado = t.id_estado
+                JOIN usuarios u ON u.id_usuario = t.usuario_responsable
+                WHERE t.id_pedido = :id
+                ORDER BY t.fecha ASC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([":id" => $idPedido]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
 
 }

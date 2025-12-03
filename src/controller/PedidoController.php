@@ -44,4 +44,15 @@ class PedidoController {
             "paginasTotales" => ceil($totalPedidos / $porPagina)
         ];
     }
+    public function tracking($idPedido) {
+        return $this->model->obtenerTracking($idPedido);
+    }
+
+    public function registrarTracking($idPedido, $estado, $descripcion) {
+
+        $idUsuario = $_SESSION['usuario']['id'];
+
+        $this->model->agregarTracking($idPedido, $estado, $descripcion, $idUsuario);
+    }
+
 }

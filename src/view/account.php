@@ -1,7 +1,7 @@
 <?php require_once __DIR__ . "/../../config/autoload.php"; ?>
 <?php require_once __DIR__ . "/../../config/sesion.php"; ?>
 <?php require_once PATH_CONFIG . 'config.php'; ?>
-
+<?php require_once PATH_LAYOUTS . 'header.php'; ?>
 <?php
 // Verificar sesión
 if (!isset($_SESSION['usuario'])) {
@@ -165,63 +165,130 @@ $pedidos = $pedidoController->misPedidos();
                   <div class="orders-grid">
 
                     <?php if (empty($pedidos)): ?>
-
-                        <p class="text-center">No tienes pedidos aún.</p>
-
+                      <p class="text-center">No tienes pedidos aún.</p>
                     <?php else: ?>
+                      <?php foreach ($pedidos as $p): ?>
+                        <?php $items = $pedidoController->detallePedido($p['id_pedido']); ?>
+                        <?php $track = $pedidoController->tracking($p['id_pedido']); ?>
 
-                        <?php foreach ($pedidos as $p): ?>
-                            <?php $items = $pedidoController->detallePedido($p['id_pedido']); ?>
+                        <div class="order-card" data-aos="fade-up">
 
-                            <div class="order-card" data-aos="fade-up">
-
-                                <div class="order-header">
-                                    <div class="order-id">
-                                        <span class="label">Order ID:</span>
-                                        <span class="value">#<?= $p['id_pedido'] ?></span>
-                                    </div>
-                                    <div class="order-date"><?= $p['creado_en'] ?></div>
+                            <!-- HEADER -->
+                            <div class="order-header">
+                                <div class="order-id">
+                                    <span class="label">Order ID:</span>
+                                    <span class="value">#<?= $p['id_pedido'] ?></span>
                                 </div>
-
-                                <div class="order-content">
-                                    <div class="product-grid">
-
-                                        <?php foreach ($items as $i): ?>
-                                            <img src="<?= BASE_URL . $i['imagen'] ?>" alt="Producto" loading="lazy">
-                                        <?php endforeach; ?>
-
-                                        <?php if (count($items) > 3): ?>
-                                            <span class="more-items">+<?= count($items) - 3 ?></span>
-                                        <?php endif; ?>
-
-                                    </div>
-
-                                    <div class="order-info">
-                                        <div class="info-row">
-                                            <span>Status</span>
-                                            <span class="status"><?= ucfirst($p['estado_nombre']) ?></span>
-                                        </div>
-                                        <div class="info-row">
-                                            <span>Items</span>
-                                            <span><?= count($items) ?></span>
-                                        </div>
-                                        <div class="info-row">
-                                            <span>Total</span>
-                                            <span class="price">$<?= number_format($p['total'], 2) ?></span>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="order-footer">
-                                    <button type="button" class="btn-details">View Details</button>
-                                </div>
-
+                                <div class="order-date"><?= $p['creado_en'] ?></div>
                             </div>
 
-                        <?php endforeach; ?>
+                            <!-- CONTENT -->
+                            <div class="order-content">
+                                <div class="product-grid">
 
-                    <?php endif; ?>
+                                    <?php foreach ($items as $i): ?>
+                                        <img src="<?= $i['imagen'] ?>" alt="Producto" loading="lazy">
+                                    <?php endforeach; ?>
+
+                                    <?php if (count($items) > 3): ?>
+                                        <span class="more-items">+<?= count($items) - 3 ?></span>
+                                    <?php endif; ?>
+
+                                </div>
+
+                                <div class="order-info">
+                                    <div class="info-row">
+                                        <span>Status</span>
+                                        <span class="status"><?= ucfirst($p['estado_nombre']) ?></span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Items</span>
+                                        <span><?= count($items) ?></span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span>Total</span>
+                                        <span class="price">$<?= number_format($p['total'], 2) ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FOOTER BUTTONS -->
+                            <div class="order-footer">
+                                <button type="button" class="btn-track" 
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#tracking<?= $p['id_pedido'] ?>">
+                                    Track Order
+                                </button>
+
+                                <button type="button" class="btn-details" 
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#details<?= $p['id_pedido'] ?>">
+                                    View Details
+                                </button>
+                            </div>
+
+                            <!-- TRACKING COLLAPSE -->
+                            <div class="collapse tracking-info" id="tracking<?= $p['id_pedido'] ?>">
+                                <div class="tracking-timeline">
+
+                                    <?php if (empty($track)): ?>
+                                        <p class="text-center">Este pedido aún no tiene historial.</p>
+
+                                    <?php else: ?>
+                                        <?php foreach ($track as $t): ?>
+                                            <div class="timeline-item <?= ($t['id_estado'] <= $p['id_estado']) ? 'completed' : '' ?>">
+                                                <div class="timeline-icon">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </div>
+
+                                                <div class="timeline-content">
+                                                    <h5><?= htmlspecialchars($t['estado_nombre']) ?></h5>
+                                                    <p><?= htmlspecialchars($t['descripcion']) ?></p>
+                                                    <span class="timeline-date"><?= $t['fecha'] ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+
+                                </div>
+                            </div>
+
+                            <!-- DETAILS COLLAPSE -->
+                            <div class="collapse order-details" id="details<?= $p['id_pedido'] ?>">
+                                <div class="details-wrapper">
+
+                                    <div class="details-header">
+                                        <h4>Order Details</h4>
+                                    </div>
+
+                                    <?php foreach ($items as $i): ?>
+                                        <div class="detail-item">
+                                            <img src="<?= BASE_URL . $i['imagen'] ?>" alt="">
+
+                                            <div class="detail-info">
+                                                <h5><?= $i['nombre'] ?></h5>
+                                                <p>Cantidad: <?= $i['cantidad'] ?></p>
+                                                <p>Precio unitario: $<?= number_format($i['precio'], 2) ?></p>
+                                            </div>
+
+                                              <div class="detail-total">
+                                                <span>Total</span>
+                                                <span>$<?= number_format($i['precio'] * $i['cantidad'], 2) ?></span>
+                                              </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    <?php endforeach; ?>
+
+                  <?php endif; ?>
 
                 </div>
 
