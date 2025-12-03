@@ -14,8 +14,9 @@ require_once "../controller/PedidoController.php";
 $pedidoController = new PedidoController();
 
 // Obtener pedidos usando SP
-$pedidos = $pedidoController->misPedidos();
+$pedidos = $pedidoController->misPedidosConDetalleSesion();
 require_once PATH_LAYOUTS . 'header.php'; 
+
 ?>
 
 
@@ -161,173 +162,145 @@ require_once PATH_LAYOUTS . 'header.php';
                       </div>
                     </div>
                   </div>
-
                   <div class="orders-grid">
 
                     <?php if (empty($pedidos)): ?>
                       <p class="text-center">No tienes pedidos aún.</p>
                     <?php else: ?>
                       <?php foreach ($pedidos as $p): ?>
-                        <?php $items = $pedidoController->detallePedido($p['id_pedido']); ?>
-                        <?php $track = $pedidoController->tracking($p['id_pedido']); ?>
-
+                        <?php
+                          $items = $p['items'] ?? [];
+                          $track = $p['track'] ?? [];
+                        ?>
                         <div class="order-card" data-aos="fade-up">
-
-                            <!-- HEADER -->
-                            <div class="order-header">
-                                <div class="order-id">
-                                    <span class="label">Order ID:</span>
-                                    <span class="value">#<?= $p['id_pedido'] ?></span>
-                                </div>
-                                <div class="order-date"><?= $p['creado_en'] ?></div>
+                          <!-- HEADER -->
+                          <div class="order-header">
+                            <div class="order-id">
+                              <span class="label">Order ID:</span>
+                              <span class="value">#<?= $p['id_pedido'] ?></span>
                             </div>
-
-                            <!-- CONTENT -->
-                            <div class="order-content">
-                                <div class="product-grid">
-
-                                    <?php foreach ($items as $i): ?>
-                                        <img src="<?= $i['imagen'] ?>" alt="Producto" loading="lazy">
-                                    <?php endforeach; ?>
-
-                                    <?php if (count($items) > 3): ?>
-                                        <span class="more-items">+<?= count($items) - 3 ?></span>
-                                    <?php endif; ?>
-
-                                </div>
-
-                                <div class="order-info">
-                                    <div class="info-row">
-                                        <span>Status</span>
-                                        <span class="status"><?= ucfirst($p['estado_nombre']) ?></span>
-                                    </div>
-
-                                    <div class="info-row">
-                                        <span>Items</span>
-                                        <span><?= count($items) ?></span>
-                                    </div>
-
-                                    <div class="info-row">
-                                        <span>Total</span>
-                                        <span class="price">$<?= number_format($p['total'], 2) ?></span>
-                                    </div>
-                                </div>
+                            <div class="order-date"><?= $p['creado_en'] ?></div>
+                          </div>
+                          <!-- CONTENT -->
+                          <div class="order-content">
+                            <div class="product-grid">
+                              <?php foreach ($items as $i): ?>
+                                <img src="<?= $i['imagen'] ?>" alt="Producto" loading="lazy">
+                              <?php endforeach; ?>
+                              <?php if ($i['cantidad'] > 3): ?>
+                                <span class="more-items">+<?= $i['cantidad'] - 3 ?></span>
+                              <?php endif; ?>
                             </div>
-
+                            <div class="order-info">
+                              <div class="info-row">
+                                <span>Status</span>
+                                <span class="status"><?= ucfirst($p['estado_nombre']) ?></span>
+                              </div>
+                              <div class="info-row">
+                                <span>Items</span>
+                                <span><?= $i['cantidad'] ?></p></span>
+                              </div>
+                              <div class="info-row">
+                                <span>Total</span>
+                                <span class="price">$<?= number_format($p['total'], 2) ?></span>  
+                              </div>
+                            </div>
                             <!-- FOOTER BUTTONS -->
                             <div class="order-footer">
-                                <button type="button" class="btn-track" 
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#tracking<?= $p['id_pedido'] ?>">
-                                    Track Order
-                                </button>
-
-                                <button type="button" class="btn-details" 
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#details<?= $p['id_pedido'] ?>">
-                                    View Details
-                                </button>
+                              <button type="button" class="btn-track" 
+                                data-bs-toggle="collapse"
+                                data-bs-target="#tracking<?= $p['id_pedido'] ?>">Track Order
+                              </button>
+                              <button type="button" class="btn-details" 
+                                data-bs-toggle="collapse"
+                                data-bs-target="#details<?= $p['id_pedido'] ?>">
+                                View Details
+                              </button>
                             </div>
-
                             <!-- TRACKING COLLAPSE -->
                             <div class="collapse tracking-info" id="tracking<?= $p['id_pedido'] ?>">
-                                <div class="tracking-timeline">
-
-                                    <?php if (empty($track)): ?>
-                                        <p class="text-center">Este pedido aún no tiene historial.</p>
-
-                                    <?php else: ?>
-                                        <?php foreach ($track as $t): ?>
-                                            <div class="timeline-item <?= ($t['id_estado'] <= $p['id_estado']) ? 'completed' : '' ?>">
-                                                <div class="timeline-icon">
-                                                    <i class="bi bi-check-circle-fill"></i>
-                                                </div>
-
-                                                <div class="timeline-content">
-                                                    <h5><?= htmlspecialchars($t['estado_nombre']) ?></h5>
-                                                    <p><?= htmlspecialchars($t['descripcion']) ?></p>
-                                                    <span class="timeline-date"><?= $t['fecha'] ?></span>
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-
-                                </div>
+                              <div class="tracking-timeline">
+                                <?php if (empty($track)): ?>
+                                  <p class="text-center">Este pedido aún no tiene historial.</p>
+                                <?php else: ?>
+                                  <?php foreach ($track as $t): ?>
+                                    <div class="timeline-item <?= ($t['id_estado'] <= $p['id_estado']) ? 'completed' : '' ?>">
+                                      <div class="timeline-icon">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                      </div>
+                                      <div class="timeline-content">
+                                        <h5><?= htmlspecialchars($t['estado_nombre']) ?></h5>
+                                        <p><?= htmlspecialchars($t['descripcion']) ?></p>
+                                        <span class="timeline-date"><?= $t['fecha'] ?></span>
+                                      </div>
+                                    </div>
+                                  <?php endforeach; ?>
+                                <?php endif; ?>
+                              </div>
                             </div>
-
                             <!-- DETAILS COLLAPSE -->
                             <div class="collapse order-details" id="details<?= $p['id_pedido'] ?>">
-                                <div class="details-wrapper">
-
-                                    <div class="details-header">
-                                        <h4>Order Details</h4>
-                                    </div>
-
-                                    <?php foreach ($items as $i): ?>
-                                        <div class="detail-item">
-                                            <img src="<?= BASE_URL . $i['imagen'] ?>" alt="">
-
-                                            <div class="detail-info">
-                                                <h5><?= $i['nombre'] ?></h5>
-                                                <p>Cantidad: <?= $i['cantidad'] ?></p>
-                                                <p>Precio unitario: $<?= number_format($i['precio'], 2) ?></p>
-                                            </div>
-
-                                              <div class="detail-total">
-                                                <span>Total</span>
-                                                <span>$<?= number_format($i['precio'] * $i['cantidad'], 2) ?></span>
-                                              </div>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    </div>
-
+                              <div class="details-wrapper">
+                                <div class="details-header">
+                                  <h4>Order Details</h4>
                                 </div>
+                                <?php foreach ($items as $i): ?>
+                                  <div class="detail-item">
+                                    <img src="<?= BASE_URL . $i['imagen'] ?>" alt="">
+                                    <div class="detail-info">
+                                      <h5><?= $i['nombre'] ?></h5>
+                                      <p>Cantidad: <?= $i['cantidad'] ?></p>
+                                      <p>Precio unitario: $<?= number_format($i['precio'], 2) ?></p>
+                                    </div>
+                                    <div class="detail-total">
+                                      <span>Total</span>
+                                      <span>$<?= number_format($i['precio'] * $i['cantidad'], 2) ?></span>
+                                    </div>
+                                  </div>
+                                <?php endforeach; ?>
+                              </div>
                             </div>
-
-                        </div>
-
-                    <?php endforeach; ?>
-
-                  <?php endif; ?>
-
-                </div>
-
-                <!-- Wishlist Tab -->
-                <div class="tab-pane fade" id="wishlist">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>My Wishlist</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-all">Add All to Cart</button>
-                    </div>
-                  </div>
-
-                  <div class="wishlist-grid">
-                    <!-- Wishlist Item 1 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="sale-badge">-20%</div>
+                          </div>  
+                        </div>                    
+                      <?php endforeach; ?>
+                    <?php endif; ?>
+                  </div>  
+                  <!-- Wishlist Tab -->
+                  <div class="tab-pane fade" id="wishlist">
+                    <div class="section-header" data-aos="fade-up">
+                      <h2>My Wishlist</h2>
+                      <div class="header-actions">
+                        <button type="button" class="btn-add-all">Add All to Cart</button>
                       </div>
-                      <div class="wishlist-content">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span>(4.5)</span>
-                          </div>
-                          <div class="price">
-                            <span class="current">$79.99</span>
-                            <span class="original">$99.99</span>
-                          </div>
+                    </div>
+                    <div class="wishlist-grid">
+                      <!-- Wishlist Item 1 -->
+                      <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="wishlist-image">
+                          <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
+                          <button class="btn-remove" type="button" aria-label="Remove from wishlist">
+                            <i class="bi bi-trash"></i>
+                          </button>
+                          <div class="sale-badge">-20%</div>
                         </div>
-                        <button type="button" class="btn-add-cart">Add to Cart</button>
+                        <div class="wishlist-content">
+                          <h4>Lorem ipsum dolor sit amet</h4>
+                          <div class="product-meta">
+                            <div class="rating">
+                              <i class="bi bi-star-fill"></i>
+                              <i class="bi bi-star-fill"></i>
+                              <i class="bi bi-star-fill"></i>
+                              <i class="bi bi-star-fill"></i>
+                              <i class="bi bi-star-half"></i>
+                              <span>(4.5)</span>
+                            </div>
+                            <div class="price">
+                              <span class="current">$79.99</span>
+                              <span class="original">$99.99</span>
+                            </div>
+                          </div>
+                          <button type="button" class="btn-add-cart">Add to Cart</button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -359,9 +332,10 @@ require_once PATH_LAYOUTS . 'header.php';
                         <?php endif; ?>
 
                         <!-- FORMULARIO CORREGIDO -->
-                        <form class="php-email-form settings-form"
-                              action="<?= BASE_URL ?>src/controller/UsuarioController.php"
-                              method="POST">
+                        <form class="settings-form"
+                          action="<?= BASE_URL ?>src/controller/UsuarioController.php"
+                          method="POST">
+
 
                             <input type="hidden" name="action" value="actualizar_perfil">
 
@@ -430,8 +404,7 @@ require_once PATH_LAYOUTS . 'header.php';
 
                           <div class="col-md-6">
                             <label for="confirmPassword" class="form-label">Confirm Password</label>
-                              <input type="password" class="form-control"
-                                id="confirmPassword" name="password_confirm" required>
+                              <input type="password" class="form-control" id="delete_password" name="password_actual" required>
                           </div>
 
                         </div>
@@ -452,7 +425,18 @@ require_once PATH_LAYOUTS . 'header.php';
                       <h3>Delete Account</h3>
                       <div class="danger-zone-content">
                         <p>Once you delete your account, there is no going back. Please be certain.</p>
-                        <button type="button" class="btn-danger">Delete Account</button>
+
+                        <form action="<?= BASE_URL ?>src/controller/UsuarioController.php" method="POST"
+                          onsubmit="return confirm('¿Seguro que quieres eliminar tu cuenta? Esta acción NO se puede deshacer.');">
+                          <input type="hidden" name="action" value="eliminar_cuenta">
+                          <div class="mt-3">
+                            <label for="delete_password" class="form-label">Confirm your password</label>
+                            <input type="password" class="form-control" id="delete_password" name="password_actual" required>
+                          </div>
+                          <div class="form-buttons mt-3">
+                            <button type="submit" class="btn-danger">Delete Account</button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -477,7 +461,6 @@ require_once PATH_LAYOUTS . 'header.php';
 
   <!-- Vendor JS Files -->
   <script src="<?= BASE_URL ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="<?= BASE_URL ?>assets/vendor/php-email-form/validate.js"></script>
   <script src="<?= BASE_URL ?>assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="<?= BASE_URL ?>assets/vendor/aos/aos.js"></script>
   <script src="<?= BASE_URL ?>assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>

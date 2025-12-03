@@ -192,41 +192,149 @@ class UsuarioController {
     // =====================================================
     // ACTUALIZAR PERFIL (nombre, apellido, correo, telefono)
     // =====================================================
-    public function actualizar_perfil() {
+   public function actualizarPerfil(): void {
+        if (!isset($_SESSION['usuario']['id'])) {
+            $_SESSION['error'] = "Sesión inválida.";
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = (int)$_SESSION['usuario']['id'];
 
-            $id = $_SESSION['usuario']['id'];
-            $nombre = trim($_POST['nombre']);
-            $apellido = trim($_POST['apellido']);
-            $correo = trim($_POST['correo']);
-            $telefono = trim($_POST['telefono']);
+        $nombre   = trim($_POST['nombre'] ?? '');
+        $apellido = trim($_POST['apellido'] ?? '');
+        $correo   = trim($_POST['correo'] ?? '');
+        $telefono = trim($_POST['telefono'] ?? '');
 
-            // Validaciones básicas
-            if (empty($nombre) || empty($apellido) || empty($correo)) {
-                $_SESSION['error'] = "Nombre, apellido y correo son obligatorios.";
+        if ($nombre === '' || $apellido === '' || $correo === '') {
+            $_SESSION['error'] = "Completa nombre, apellido y correo.";
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
+
+        $this->model->actualizarPerfil($id, $nombre, $apellido, $correo, $telefono);
+
+        // ✅ actualizar sesión para que se refleje inmediatamente en la vista
+        $_SESSION['usuario']['nombre']   = $nombre;
+        $_SESSION['usuario']['apellido'] = $apellido;
+        $_SESSION['usuario']['correo']   = $correo;
+        $_SESSION['usuario']['telefono'] = $telefono;
+
+        $_SESSION['success'] = "Perfil actualizado correctamente.";
+        header("Location: " . BASE_URL . "src/view/account.php#settings");
+        exit;
+    }
+    // =====================================================
+    // ACTUALIZAR PASSWORD
+    // =====================================================
+    public function actualizarPassword() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: ../view/account.php#settings");
+            exit;
+        }
+
+        if (!isset($_SESSION['usuario']['id'])) {
+            $_SESSION['error'] = "No hay sesión activa.";
+            header("Location: ../view/account.php#settings");
+            exit;
+        }
+
+        $id = (int)$_SESSION['usuario']['id'];
+
+        $actual  = $_POST['password_actual'] ?? '';
+        $nueva   = $_POST['password_nuevo'] ?? '';
+        $confirm = $_POST['password_confirm'] ?? '';
+
+        if ($actual === '' || $nueva === '' || $confirm === '') {
+            $_SESSION['error'] = "Completa los 3 campos de contraseña.";
+            header("Location: ../view/account.php#settings");
+            exit;
+        }
+
+        if ($nueva !== $confirm) {
+            $_SESSION['error'] = "La nueva contraseña y la confirmación no coinciden.";
+            header("Location: ../view/account.php#settings");
+            exit;
+        }
+
+        require_once __DIR__ . '/../model/UsuarioModel.php';
+        $model = new UsuarioModel();
+
+        try {
+            // 1) Trae hash actual
+            $u = $model->obtenerUsuarioPorId($id);
+            $hashActual = $u['clave'] ?? '';
+
+            // 2) Valida password actual
+            if (!$hashActual || !password_verify($actual, $hashActual)) {
+                $_SESSION['error'] = "La contraseña actual es incorrecta.";
                 header("Location: ../view/account.php#settings");
-                exit();
+                exit;
             }
 
-            // Actualizar en la BD
-            $ok = $this->model->actualizarPerfil($id, $nombre, $apellido, $correo, $telefono);
+            // 3) Genera hash nuevo y manda al SP
+            $hashNuevo = password_hash($nueva, PASSWORD_BCRYPT);
+
+            $ok = $model->actualizarPasswordSP($id, $hashNuevo);
 
             if ($ok) {
-                // Actualizar en sesión para que se vea inmediatamente
-                $_SESSION['usuario']['nombre']   = $nombre;
-                $_SESSION['usuario']['apellido'] = $apellido;
-                $_SESSION['usuario']['correo']   = $correo;
-                $_SESSION['usuario']['telefono'] = $telefono;
-
-                $_SESSION['success'] = "Datos actualizados correctamente.";
+                $_SESSION['success'] = "Contraseña actualizada correctamente.";
             } else {
-                $_SESSION['error'] = "No se pudo actualizar el perfil.";
+                $_SESSION['error'] = "No se pudo actualizar la contraseña.";
             }
 
-            header("Location: ../view/account.php#settings");
-            exit();
+        } catch (Throwable $e) {
+            $_SESSION['error'] = "Error al actualizar contraseña: " . $e->getMessage();
         }
+
+        header("Location: ../view/account.php#settings");
+        exit;
+    }
+    // =====================================================
+    // ELIMINAR CUENTA
+    // =====================================================
+    public function eliminarCuenta(): void {
+        if (!isset($_SESSION['usuario']['id'])) {
+            $_SESSION['error'] = "Sesión inválida.";
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
+
+        $idUsuario = (int)$_SESSION['usuario']['id'];
+        $password = trim($_POST['password_actual'] ?? '');
+
+        if ($password === '') {
+            $_SESSION['error'] = "Debes confirmar tu contraseña.";
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
+
+        $hash = $this->model->obtenerHashPassword($idUsuario);
+
+        if (!$hash || !password_verify($password, $hash)) {
+            $_SESSION['error'] = "Contraseña incorrecta.";
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
+
+        $ok = $this->model->eliminarUsuario($idUsuario);
+
+        if (!$ok) {
+            $_SESSION['error'] = "No se pudo eliminar la cuenta.";
+            header("Location: " . BASE_URL . "src/view/account.php#settings");
+            exit;
+        }
+
+        session_unset();
+        session_destroy();
+
+        header("Location: " . BASE_URL . "src/view/login_register.php?tab=login");
+        exit;
     }
 
 
@@ -245,6 +353,8 @@ $controller = new UsuarioController();
             case 'estado': $controller->cambiarEstado(); break;
             case 'rol': $controller->asignarRol(); break;
             case 'actualizar_perfil': $controller->actualizarPerfil(); break;
+            case 'actualizar_password': $controller->actualizarPassword(); break;
+            case 'eliminar_cuenta': $controller->eliminarCuenta(); break;
             default:
                 $_SESSION['error'] = "Acción no válida.";
                 header("Location: ../view/login_register.php");

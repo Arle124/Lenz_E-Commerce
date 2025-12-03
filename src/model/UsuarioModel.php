@@ -134,6 +134,50 @@ class UsuarioModel {
             ":telefono" => $telefono
         ]);
     }
+    // -----------------------------------
+    // ACTUALIZAR PASSWORD
+    //-----------------------------------
+    public function obtenerUsuarioPorId(int $id): array {
+        $sql = "SELECT id_usuario, clave FROM usuarios WHERE id_usuario = :id LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+    }
+    //-----------------------------------
+    // ACTUALIZAR PASSWORD CON SP
+    //-----------------------------------
+    public function actualizarPasswordSP(int $id, string $hashNuevo): bool {
+        $sql = "CALL sp_actualizar_password(:id, :hash)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            ':id' => $id,
+            ':hash' => $hashNuevo
+        ]);
+
+        // El SP devuelve SELECT ROW_COUNT() AS filas_afectadas
+        $row = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+        $stmt->closeCursor();
+
+        return ((int)($row['filas_afectadas'] ?? 0)) > 0;
+    }
+    // -----------------------------------
+    // OBTENER HASH PASSWORD
+    //-----------------------------------
+    public function obtenerHashPassword(int $idUsuario): ?string {
+        $sql = "SELECT clave FROM usuarios WHERE id_usuario = :id LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':id' => $idUsuario]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['clave'] ?? null;
+    }
+    // -----------------------------------
+    // ELIMINAR USUARIO
+    //-----------------------------------
+    public function eliminarUsuario(int $idUsuario): bool {
+        $sql = "DELETE FROM usuarios WHERE id_usuario = :id";
+        $stmt = $this->conn->prepare($sql);
+        return $stmt->execute([':id' => $idUsuario]);
+    }
 
 
 }
