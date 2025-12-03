@@ -146,7 +146,7 @@ $productos = $productoController->filtrar($cat, $subcat, $order, $price);
                       <div class="product-thumb">
                         <?php if($prod['nuevo']??false): ?><span class="product-label">New Season</span><?php endif; ?>
                         <a href="<?= BASE_URL ?>src/view/product-details.php?id=<?= $prod['id_producto'] ?>">
-                          <img src="<?= $prod['imagen'] ?>" alt="<?= htmlspecialchars($prod['nombre']) ?>" class="main-img" loading="lazy">
+                          <img src="<?= BASE_URL . $prod['imagen'] ?>" alt="<?= htmlspecialchars($prod['nombre']) ?>" class="main-img" loading="lazy">
                         </a>
                       </div>
                       <div class="product-content">

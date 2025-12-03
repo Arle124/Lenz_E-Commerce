@@ -52,17 +52,37 @@ class ProductoModel {
                 $sql .= " ORDER BY p.id_producto DESC";
                 break;
             default:
-                $sql .= " ORDER BY p.id_producto ASC"; // o cualquier orden por defecto
+                $sql .= " ORDER BY p.id_producto ASC";
                 break;
         }
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-
         $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Traer imágenes de todos los productos filtrados
+        if (!empty($productos)) {
+            $ids = array_column($productos, 'id_producto');
+            $placeholders = implode(',', array_fill(0, count($ids), '?'));
+            $imgStmt = $this->pdo->prepare("SELECT id_producto, ruta FROM imagenes_productos WHERE id_producto IN ($placeholders)");
+            $imgStmt->execute($ids);
+            $imagenes = $imgStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Organizar imágenes por producto
+            $imgsPorProducto = [];
+            foreach ($imagenes as $img) {
+                $imgsPorProducto[$img['id_producto']][] = $img['ruta'];
+            }
+
+            // Asociar la primera imagen a cada producto
+            foreach ($productos as &$prod) {
+                $prod['imagen'] = $imgsPorProducto[$prod['id_producto']][0] ?? 'assets/img/default.jpg';
+            }
+        }
 
         return $productos;
     }
+
 
     public function agregarProducto($nombre, $descripcion, $precio, $id_subcategoria, $creado_por) {
         $sql = "INSERT INTO producto (nombre, descripcion, precio, id_subcategoria, creado_por, creado_en, actualizado_en)
