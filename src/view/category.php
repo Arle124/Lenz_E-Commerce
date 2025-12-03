@@ -145,11 +145,21 @@ $productos = $productoController->filtrar($cat, $subcat, $order, $price);
                     <div class="product-box">
                       <div class="product-thumb">
                         <?php if($prod['nuevo']??false): ?><span class="product-label">New Season</span><?php endif; ?>
-                        <!-- <img src="<?= $prod['imagen'] ?>" alt="<?= htmlspecialchars($prod['nombre']) ?>" class="main-img"> -->
+                        <a href="<?= BASE_URL ?>src/view/product-details.php?id=<?= $prod['id_producto'] ?>">
+                          <img src="<?= $prod['imagen'] ?>" alt="<?= htmlspecialchars($prod['nombre']) ?>" class="main-img" loading="lazy">
+                        </a>
                       </div>
                       <div class="product-content">
-                        <h3 class="product-title"><a href="product-details.php?id=<?= $prod['id_producto'] ?>"><?= htmlspecialchars($prod['nombre']) ?></a></h3>
+                        <h3 class="product-title">
+                          <a href="<?= BASE_URL ?>src/view/product-details.php?id=<?= $prod['id_producto'] ?>"><?= htmlspecialchars($prod['nombre']) ?></a>
+                        </h3>
                         <div class="product-price">$<?= number_format($prod['precio'],2) ?></div>
+                        <!-- Botón Añadir al Carrito -->
+                        <form action="<?= BASE_URL ?>src/view/cart.php" method="post" class="mt-2">
+                          <input type="hidden" name="id_producto" value="<?= $prod['id_producto'] ?>">
+                          <input type="hidden" name="cantidad" value="1">
+                          <button type="submit" class="btn btn-primary btn-sm">Añadir al carrito</button>
+                        </form>
                       </div>
                     </div>
                   </div>
