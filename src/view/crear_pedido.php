@@ -4,13 +4,16 @@ require_once __DIR__ . "/../../config/sesion.php";
 
 // Validar que exista carrito
 if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-    die("No hay productos en el carrito.");
+    header("Location: cart.php");
+    exit;
 }
 
 // Validar usuario
 if (!isset($_SESSION['usuario']['id'])) {
-    die("Debes iniciar sesión para realizar un pedido.");
+    header('Location: login_register.php');
+    exit;
 }
+
 
 $idCliente = (int)$_SESSION['usuario']['id'];
 
