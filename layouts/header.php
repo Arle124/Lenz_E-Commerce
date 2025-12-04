@@ -8,6 +8,15 @@ $rolId = (int)($_SESSION['usuario']['rol_id'] ?? 0);
 $esCliente = $logueado && ($rolId === 1 || $rol === 'cliente');
 $esStaff   = $logueado && in_array($rolId, [2,3], true); // trabajador
 $esDuenio  = $logueado && ($rolId === 4 || $rol === 'duenio' || $rol === 'dueño'); // si aplica
+
+$cartCount = 0;
+
+if ($logueado && $esCliente && !empty($_SESSION['carrito']) && is_array($_SESSION['carrito'])) {
+  foreach ($_SESSION['carrito'] as $item) {
+    $cartCount += (int)($item['cantidad'] ?? 1);
+  }
+}
+
 ?>
 <header id="header" class="header position-relative">
     <!-- Top Bar -->
@@ -104,12 +113,17 @@ $esDuenio  = $logueado && ($rolId === 4 || $rol === 'duenio' || $rol === 'dueño
                       <i class="bi bi-gear me-2"></i><span>Settings</span>
                     </a>
                     <!-- Extra por rol -->
-                    <?php if ($esCliente): ?>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/cart.php">
-                        <i class="bi bi-cart3 me-2"></i><span>Carrito</span>
+                    <?php if (!$logueado || $esCliente): ?>
+                      <a href="<?= BASE_URL ?>src/view/cart.php" class="header-action-btn">
+                        <i class="bi bi-cart3"></i>
+
+                        <?php if ($logueado && $esCliente && $cartCount > 0): ?>
+                          <span class="badge"><?= (int)$cartCount ?></span>
+                        <?php endif; ?>
+
                       </a>
                     <?php endif; ?>
+
 
                     <?php if ($esStaff): ?>
                       <div class="dropdown-divider"></div>
