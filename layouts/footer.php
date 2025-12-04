@@ -29,14 +29,6 @@
           </div>
 
           <div class="col-lg-2 col-md-6 col-sm-6">
-            <div class="footer-widget">
-              <h4>Tienda</h4>
-              <ul class="footer-links">
-                <li><a href="<?= BASE_URL ?>index.php">Recién llegados</a></li>
-                <li><a href="<?= BASE_URL ?>index.php#best-sellers">Más vendidos</a></li>
-                <li><a href="<?= BASE_URL ?>src/view/category.php">Venta</a></li>
-              </ul>
-            </div>
           </div>
 
           <div class="col-lg-2 col-md-6 col-sm-6">
@@ -45,8 +37,6 @@
               <ul class="footer-links">
                 <li><a href="<?= BASE_URL ?>src/view/support.php">Centro de Ayuda</a></li>
                 <li><a href="<?= BASE_URL ?>src/view/account.php">Estado del pedido</a></li>
-                <li><a href="<?= BASE_URL ?>src/view/shiping-info.php">Información de envío</a></li>
-                <li><a href="<?= BASE_URL ?>src/static/return-policy.php">Devoluciones & cambios</a></li>
                 <li><a href="<?= BASE_URL ?>src/view/contact.php">Contáctenos</a></li>
               </ul>
             </div>
@@ -89,10 +79,6 @@
         <div class="payment-methods d-flex align-items-center justify-content-center">
           <span>Aceptamos:</span>
           <div class="payment-icons">
-            <!-- <i class="bi bi-credit-card" aria-label="Credit Card"></i> -->
-            <!-- <i class="bi bi-paypal" aria-label="PayPal"></i>
-            <i class="bi bi-apple" aria-label="Apple Pay"></i>
-            <i class="bi bi-google" aria-label="Google Pay"></i> -->
             <i class="bi bi-shop" aria-label="Shop Pay"></i>
             <i class="bi bi-cash" aria-label="Cash on Delivery"></i>
           </div>

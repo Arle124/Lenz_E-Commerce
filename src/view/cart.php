@@ -65,8 +65,8 @@ if (!empty($_SESSION['cart'])) {
         $subtotal += $item['precio'] * $item['cantidad'];
     }
 }
-$shipping = 5000; // Costo de envío fijo
-$total = $subtotal + $shipping;
+
+$total = $subtotal;
 ?>
 
 <!DOCTYPE html>
@@ -168,11 +168,10 @@ $total = $subtotal + $shipping;
           <div class="cart-summary">
             <h4 class="summary-title">Resumen del Pedido</h4>
             <div class="summary-item"><span class="summary-label">Subtotal</span><span class="summary-value">$<?= number_format($subtotal,2) ?></span></div>
-            <div class="summary-item shipping-item"><span class="summary-label">Envío</span><span class="summary-value">$<?= number_format($shipping,2) ?></span></div>
             <div class="summary-total"><span class="summary-label">Total</span><span class="summary-value">$<?= number_format($total,2) ?></span></div>
             <div class="checkout-button mt-3">
               <a href="<?=BASE_URL?>src/view/checkout.php" class="btn btn-accent w-100">
-                Proceder al Pedido <i class="bi bi-arrow-right"></i>
+                Confirmar Pedido <i class="bi bi-arrow-right"></i>
               </a>
             </div>
             <div class="continue-shopping"> <a href="<?=BASE_URL?>src/view/category.php" class="btn btn-link w-100"> <i class="bi     bi-arrow-left"></i> Continuar Comprando </a> </div>
