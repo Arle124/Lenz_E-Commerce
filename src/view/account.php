@@ -183,7 +183,7 @@ require_once PATH_LAYOUTS . 'header.php';
                           <div class="order-content">
                             <div class="product-grid">
                               <?php foreach ($items as $i): ?>
-                                <img src="<?= $i['imagen'] ?>" alt="Producto" loading="lazy">
+                                <img src="<?= BASE_URL . $i['imagen'] ?>" alt="<?= htmlspecialchars($i['nombre']) ?>" class="main-img" loading="lazy">
                               <?php endforeach; ?>
                               <?php if ($i['cantidad'] > 3): ?>
                                 <span class="more-items">+<?= $i['cantidad'] - 3 ?></span>
@@ -264,47 +264,47 @@ require_once PATH_LAYOUTS . 'header.php';
                     <?php endif; ?>
                   </div>  
 
-                  <!-- Wishlist Tab -->
-                <div class="tab-pane fade" id="wishlist">
-                  <div class="section-header" data-aos="fade-up">
-                    <h2>My Wishlist</h2>
-                    <div class="header-actions">
-                      <button type="button" class="btn-add-all">Add All to Cart</button>
-                    </div>
-                  </div>
-
-                  <div class="wishlist-grid">
-                    <!-- Wishlist Item 1 -->
-                    <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
-                      <div class="wishlist-image">
-                        <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
-                        <button class="btn-remove" type="button" aria-label="Remove from wishlist">
-                          <i class="bi bi-trash"></i>
-                        </button>
-                        <div class="sale-badge">-20%</div>
+                    <!-- Wishlist Tab -->
+                    <div class="tab-pane fade" id="wishlist">
+                      <div class="section-header" data-aos="fade-up">
+                        <h2>My Wishlist</h2>
+                        <div class="header-actions">
+                          <button type="button" class="btn-add-all">Add All to Cart</button>
+                        </div>
                       </div>
-                      <div class="wishlist-content">
-                        <h4>Lorem ipsum dolor sit amet</h4>
-                        <div class="product-meta">
-                          <div class="rating">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                            <span>(4.5)</span>
+
+                      <div class="wishlist-grid">
+                        <!-- Wishlist Item 1 -->
+                        <div class="wishlist-card" data-aos="fade-up" data-aos-delay="100">
+                          <div class="wishlist-image">
+                            <img src="assets/img/product/product-1.webp" alt="Product" loading="lazy">
+                            <button class="btn-remove" type="button" aria-label="Remove from wishlist">
+                              <i class="bi bi-trash"></i>
+                            </button>
+                            <div class="sale-badge">-20%</div>
                           </div>
-                          <div class="price">
-                            <span class="current">$79.99</span>
-                            <span class="original">$99.99</span>
+                          <div class="wishlist-content">
+                            <h4>Lorem ipsum dolor sit amet</h4>
+                            <div class="product-meta">
+                              <div class="rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                                <span>(4.5)</span>
+                              </div>
+                              <div class="price">
+                                <span class="current">$79.99</span>
+                                <span class="original">$99.99</span>
+                              </div>
+                            </div>
+                            <button type="button" class="btn-add-cart">Add to Cart</button>
                           </div>
                         </div>
-                        <button type="button" class="btn-add-cart">Add to Cart</button>
                       </div>
-                    </div>
+                    </div> <!-- ✅ cierre correcto de #wishlist -->
                   </div>
-                </div> <!-- ✅ cierre correcto de #wishlist -->
-              </div>
 
                 <!-- Settings Tab -->
                 <div class="tab-pane fade" id="settings">

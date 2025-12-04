@@ -1,6 +1,10 @@
 <?php
     class Database {
-
+         // private $host = "drapps.co";
+        // private $dbname = "drappsco_db_lenz";
+        // private $usuario = "drappsco_lenz";
+        // private $password = "DBLenz2025";
+        // private static $conexion = null;
         private $host = "localhost";
         private $dbname = "bdlenz";
         private $usuario = "root";

@@ -117,6 +117,13 @@ $esDuenio  = $logueado && ($rolId === 4 || $rol === 'duenio' || $rol === 'dueño
                         <i class="bi bi-clipboard-check me-2"></i><span>Pedidos</span>
                       </a>
                     <?php endif; ?>
+                    
+                    <?php if ($esDuenio): ?>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/admin/dashboard.php">
+                        <i class="bi bi-speedometer2 me-2"></i><span>Panel del dueño</span>
+                      </a>
+                    <?php endif; ?>
 
 
 

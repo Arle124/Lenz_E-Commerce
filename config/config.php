@@ -9,4 +9,5 @@ define("PATH_SRC", BASE_PATH . "src/");
 
 // URL pública del proyecto
 define("BASE_URL", "http://localhost/E-Commerce/Lenz_E-Commerce/");
+// define("BASE_URL", "https://drapps.co/expoingtech/E-Commerce/Lenz_E-Commerce/");
 
