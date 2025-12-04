@@ -52,6 +52,18 @@ $productosAdmin = $productoController->listarProductosAdmin();
   <link href="<?= BASE_URL ?>assets/vendor/drift-zoom/drift-basic.css" rel="stylesheet">
 
   <link href="<?= BASE_URL ?>assets/css/main.css" rel="stylesheet">
+  <style>
+  /* SOLO para el listado admin de productos */
+  .thumb-admin{
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid rgba(0,0,0,.08);
+    flex: 0 0 64px;
+  }
+</style>
+
 </head>
 
 <body class="account-page">
@@ -184,7 +196,7 @@ $productosAdmin = $productoController->listarProductosAdmin();
                                 <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <?php if (!empty($p['imagen'])): ?>
-                                    <img src="<?= BASE_URL . $p['imagen'] ?>" alt="<?= htmlspecialchars($p['nombre']) ?>" class="main-img" loading="lazy">
+                                    <img src="<?= BASE_URL . $p['imagen'] ?>" alt="<?= htmlspecialchars($p['nombre']) ?>" class="thumb-admin" loading="lazy">
                                     <?php endif; ?>
                                     <div>
                                     <div class="fw-semibold"><?= htmlspecialchars($p['nombre']) ?></div>
