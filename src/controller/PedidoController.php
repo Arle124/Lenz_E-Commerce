@@ -33,23 +33,23 @@ class PedidoController {
     // ======================
     // TRACKING / ADMIN
     // ======================
-    // public function registrarTracking(int $idPedido, int $estado, string $descripcion): void {
-    //     $idUsuario = $this->getIdUsuarioSesion();
-    //     if ($idUsuario <= 0) return;
-    //     $this->model->registrarTracking($idPedido, $estado, $descripcion, $idUsuario);
-    // }
+    public function registrarTracking(int $idPedido, int $estado, string $descripcion): void {
+        $idUsuario = $this->getIdUsuarioSesion();
+        if ($idUsuario <= 0) return;
+        $this->model->registrarTracking($idPedido, $estado, $descripcion, $idUsuario);
+    }
 
-    // public function pedidosAdmin(): array {
-    //     return $this->model->listarPedidosAdmin();
-    // }
+    public function pedidosAdmin(): array {
+        return $this->model->listarPedidosAdmin();
+    }
 
-    // public function pedidoAdminPorId(int $idPedido): ?array {
-    //     return $this->model->obtenerPedidoAdminPorId($idPedido);
-    // }
+    public function pedidoAdminPorId(int $idPedido): ?array {
+        return $this->model->obtenerPedidoAdminPorId($idPedido);
+    }
 
-    // public function itemsPedido(int $idPedido): array {
-    //     return $this->model->obtenerItemsPedido($idPedido);
-    // }
+    public function itemsPedido(int $idPedido): array {
+        return $this->model->obtenerItemsPedido($idPedido);
+    }
 
     // public function actualizarEstadoPedido(int $idPedido, int $idEstado): void {
     //     $idUsuario = $this->getIdUsuarioSesion();

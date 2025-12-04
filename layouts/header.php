@@ -116,8 +116,12 @@ $esDuenio  = $logueado && ($rolId === 4 || $rol === 'duenio' || $rol === 'dueño
                       <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/admin/pedidos.php">
                         <i class="bi bi-clipboard-check me-2"></i><span>Pedidos</span>
                       </a>
+                      <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/admin/productos.php">
+                        <i class="bi bi-box2-heart me-2"></i><span>Productos</span>
+                      </a>
+
                     <?php endif; ?>
-                    
+
                     <?php if ($esDuenio): ?>
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item d-flex align-items-center" href="<?= BASE_URL ?>src/view/admin/dashboard.php">
