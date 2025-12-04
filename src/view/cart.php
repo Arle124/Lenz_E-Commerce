@@ -16,9 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_producto'], $_POST
         if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
 
         if (isset($_SESSION['cart'][$id])) {
-            $_SESSION['cart'][$id]['cantidad'] = min($_SESSION['cart'][$id]['cantidad'] + $cantidad, $producto['stock']);
+
+            // Asegurar que siempre tenga id_producto
+            if (!isset($_SESSION['cart'][$id]['id_producto'])) {
+                $_SESSION['cart'][$id]['id_producto'] = $id;
+            }
+
+            $_SESSION['cart'][$id]['cantidad'] = min(
+                $_SESSION['cart'][$id]['cantidad'] + $cantidad,
+                $producto['stock']
+            );
+
         } else {
             $_SESSION['cart'][$id] = [
+                'id_producto' => $id,   // ← IMPORTANTE
                 'nombre' => $producto['nombre'],
                 'precio' => $producto['precio'],
                 'cantidad' => min($cantidad, $producto['stock']),
@@ -30,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_producto'], $_POST
         header("Location: cart.php");
         exit;
     }
+
 }
 
 // 2️⃣ Eliminar producto
@@ -170,7 +182,7 @@ $total = $subtotal;
             <div class="summary-item"><span class="summary-label">Subtotal</span><span class="summary-value">$<?= number_format($subtotal,2) ?></span></div>
             <div class="summary-total"><span class="summary-label">Total</span><span class="summary-value">$<?= number_format($total,2) ?></span></div>
             <div class="checkout-button mt-3">
-              <a href="<?=BASE_URL?>src/view/checkout.php" class="btn btn-accent w-100">
+              <a href="<?=BASE_URL?>src/view/crear_pedido.php" class="btn btn-accent w-100">
                 Confirmar Pedido <i class="bi bi-arrow-right"></i>
               </a>
             </div>

@@ -164,6 +164,10 @@ class PedidoController {
         return $this->model->ultimosTrackings($limit);
     }
 
+    public function crearPedido($carrito, $idCliente): int {
+        return $this->model->crearPedido($idCliente, $carrito);
+    }
+
 }
 // =============================
 // ROUTER / ENDPOINT (POST)

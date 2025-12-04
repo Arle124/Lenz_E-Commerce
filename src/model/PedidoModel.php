@@ -294,40 +294,116 @@ class PedidoModel {
     }
 
     // Lista pedidos (para dashboard) con filtros
-public function listarPedidosDashboard(?int $idEstado = null, int $dias = 30): array {
-    $dias = max(1, min($dias, 365));
+    public function listarPedidosDashboard(?int $idEstado = null, int $dias = 30): array {
+        $dias = max(1, min($dias, 365));
 
-    $sql = "SELECT
-                p.id_pedido,
-                CONCAT(u.nombres,' ',u.apellidos) AS cliente,
-                u.correo,
-                p.total,
-                p.creado_en,
-                p.id_estado,
-                e.nombre AS estado_nombre
-            FROM pedidos p
-            JOIN usuarios u ON u.id_usuario = p.id_cliente
-            JOIN estados_pedido e ON e.id_estado = p.id_estado
-            WHERE p.creado_en >= DATE_SUB(NOW(), INTERVAL :dias DAY)";
+        $sql = "SELECT
+                    p.id_pedido,
+                    CONCAT(u.nombres,' ',u.apellidos) AS cliente,
+                    u.correo,
+                    p.total,
+                    p.creado_en,
+                    p.id_estado,
+                    e.nombre AS estado_nombre
+                FROM pedidos p
+                JOIN usuarios u ON u.id_usuario = p.id_cliente
+                JOIN estados_pedido e ON e.id_estado = p.id_estado
+                WHERE p.creado_en >= DATE_SUB(NOW(), INTERVAL :dias DAY)";
 
-    if (!empty($idEstado)) {
-        $sql .= " AND p.id_estado = :estado";
+        if (!empty($idEstado)) {
+            $sql .= " AND p.id_estado = :estado";
+        }
+
+        $sql .= " ORDER BY p.creado_en DESC";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':dias', $dias, PDO::PARAM_INT);
+
+        if (!empty($idEstado)) {
+            $stmt->bindValue(':estado', $idEstado, PDO::PARAM_INT);
+        }
+
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
+        $stmt->closeCursor();
+        return $rows;
     }
 
-    $sql .= " ORDER BY p.creado_en DESC";
+    public function crearPedido(int $idCliente, array $carrito): int {
+        if (empty($carrito)) {
+            throw new InvalidArgumentException("El carrito está vacío.");
+        }
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bindValue(':dias', $dias, PDO::PARAM_INT);
+        // Normalizar carrito: aceptar 'id_producto' o 'id'
+        $normalized = [];
+        foreach ($carrito as $i => $item) {
+            // Asegurarnos de que venga cantidad y precio
+            if (!isset($item['cantidad']) || !isset($item['precio'])) {
+                throw new InvalidArgumentException("Item en posición $i inválido: falta 'cantidad' o 'precio'.");
+            }
 
-    if (!empty($idEstado)) {
-        $stmt->bindValue(':estado', $idEstado, PDO::PARAM_INT);
+            $idProd = $item['id_producto'] ?? $item['id'] ?? null;
+            if ($idProd === null) {
+                throw new InvalidArgumentException("Item en posición $i inválido: falta 'id_producto' o 'id'.");
+            }
+
+            $normalized[] = [
+                'id_producto' => (int)$idProd,
+                'cantidad'    => (int)$item['cantidad'],
+                'precio'      => (float)$item['precio']
+            ];
+        }
+
+        // Calcular total
+        $total = 0.0;
+        foreach ($normalized as $it) {
+            $total += $it['precio'] * $it['cantidad'];
+        }
+
+        try {
+            // Iniciar transacción
+            $this->conn->beginTransaction();
+
+            // 2. Insertar pedido (NO incluir id_pedido porque es AUTO_INCREMENT)
+            $sqlPedido = "INSERT INTO pedidos (id_cliente, id_estado, total, creado_en)
+                        VALUES (:id_cliente, :id_estado, :total, NOW())";
+            $stmt = $this->conn->prepare($sqlPedido);
+            $stmt->execute([
+                ':id_cliente' => $idCliente,
+                ':id_estado'  => 1,      // 1 = pendiente (ajusta si es necesario)
+                ':total'      => $total
+            ]);
+
+            $idPedido = (int)$this->conn->lastInsertId();
+
+            // 3. Insertar detalles
+            // Atento: tu tabla en BD por tus capturas se llama "pedidos_detalles"
+            // (no "pedido_detalles"). Ajusta si tu BD tiene otro nombre.
+            $sqlDetalle = "INSERT INTO pedidos_detalles (id_pedido, id_producto, cantidad, precio_unitario)
+                        VALUES (:id_pedido, :id_producto, :cantidad, :precio_unitario)";
+            $stmtDetalle = $this->conn->prepare($sqlDetalle);
+
+            foreach ($normalized as $it) {
+                $stmtDetalle->execute([
+                    ':id_pedido'       => $idPedido,
+                    ':id_producto'     => $it['id_producto'],
+                    ':cantidad'        => $it['cantidad'],
+                    ':precio_unitario' => $it['precio']
+                ]);
+            }
+
+            // Commit
+            $this->conn->commit();
+
+            return $idPedido;
+
+        } catch (PDOException $ex) {
+            // Rollback si algo falla
+            if ($this->conn->inTransaction()) $this->conn->rollBack();
+            // Re-lanzar la excepción con más contexto para debug
+            throw new RuntimeException("Error al crear pedido: " . $ex->getMessage(), 0, $ex);
+        }
     }
-
-    $stmt->execute();
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
-    $stmt->closeCursor();
-    return $rows;
-}
 
 
 
